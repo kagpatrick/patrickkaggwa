@@ -51,9 +51,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Welcome to Patrick’s and data analysis portfolio.",
+    "title": "Welcome to Patrick’s data analysis portfolio.",
     "section": "",
-    "text": "Welcome to Patrick’s and data analysis portfolio.\nPlease use the Menu Bar above to look around. Have fun!"
+    "text": "```html\n\n\nWelcome to Patrick’s data analysis portfolio.\nPlease use the Menu Bar above to look around. Have fun!"
   },
   {
     "objectID": "tidytuesday-exercise/tidytuesday-exercise.html",
