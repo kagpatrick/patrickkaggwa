@@ -1,21 +1,25 @@
 # About Me
 
-[[Evening](https://github.com/kagpatrick/patrickkaggwa-MADA-portfolio/blob/main/images/personal.png)](https://github.com/)
+[![**One evening during my Christmas break**](images/personal.png){fig-align="center"}](https://github.com/kagpatrick/patrickkaggwa-MADA-portfolio)
 
-I am first year PhD, concentration Epidemiology under Global Health Institute with background in computer Hardware, open source systems, Network design and deployments, docker containerization, Linux and Health Informatics.
+I am a first-year Ph.D. student, specializing in Epidemiology at the Global Health Institute. My background includes expertise in computer hardware, open-source systems, network design and deployments, Docker containerization, Linux, and Health Informatics.
 
-### Background and Research Interests
+## Background and Research Interests
 
-I hold a Bachelor of Science in Computer Science and Masters in Health Informatics with research interest around data science, AI and the intersection of technology and health. I currently work with Dr. Christopher Whalen and Dr. Juliet Sekandi under the Global Health Institute and they focus on TB research in Africa specifically Uganda.
+I hold a Bachelor of Science in Computer Science and a Master's in Health Informatics. My research interests revolve around data science, AI, and the intersection of technology and health. I am currently working with Dr. Christopher Whalen and Dr. Juliet Sekandi at the Global Health Institute, focusing on TB research in Africa, specifically in Uganda.
 
-I am deeply engaged in projects that involve the application of mobile digital technologies to enhance data collection, monitoring, and adherence in TB and also using using watches in collection of mobility data for participants at risk of LTBI.
+I am actively involved in projects that leverage mobile digital technologies to enhance data collection, monitoring, and adherence in TB. Additionally, I explore the use of smartwatches in collecting mobility data for participants at risk of Latent Tuberculosis Infection (LTBI).
 
-### Data Analysis Experience
+## Data Analysis Experience
 
-My data analysis skills are at the beginners level but now with knowledge in R acquired in EPID8500 and SAS am motivated in improving my analysis skills.
+While my data analysis skills are currently at a beginner's level, I have acquired knowledge in R through EPID8500 and SAS. I am motivated to enhance my analysis skills further.
 
-### MADA Course Expectations
+## MADA Course Expectations
 
-I hope to improve my R programming and my data analysis skills using tools to in the Modern Applied Data Analysis course. I expect to get skills to help my kick start towards my data science and AI career.
+In the Modern Applied Data Analysis (MADA) course, I aim to improve my R programming skills and enhance my data analysis capabilities using modern tools. I expect to gain skills that will propel me toward a successful career in data science and AI.
 
-[!Useful link on Quarto](https://www.youtube.com/watch?v=_f3latmOhew)
+Watch a useful video on Quarto:
+
+<iframe width="760" height="400" src="https://www.youtube.com/embed/_f3latmOhew" frameborder="0" allowfullscreen>
+
+</iframe>

@@ -1,4 +1,17 @@
+---
+layout: default
+---
+
+```{=html}
+<style>
+  body {
+    background-image: url("images/frontpage1.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white; /* Set text color to white */
+  }
+</style>
+```
 # Welcome to Patrick's and data analysis portfolio.
 
--   Please use the `Menu Bar` above to look around.
--   Have fun!
+Please use the <a href="#menu-bar" style="color: white;">Menu Bar</a> above to look around. Have fun!
