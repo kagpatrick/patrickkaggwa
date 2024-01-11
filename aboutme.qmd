@@ -1,6 +1,6 @@
 # About Me
 
-[![Evening](~/MADA-course/patrickkaggwa-MADA-portfolio/images/personal.png)](~/MADA-course/patrickkaggwa-MADA-portfolio/images)
+[[Evening](~/MADA-course/patrickkaggwa-MADA-portfolio/images/personal.png)](~/MADA-course/patrickkaggwa-MADA-portfolio/images)
 
 I am first year PhD, concentration Epidemiology under Global Health Institute with background in computer Hardware, open source systems, Network design and deployments, docker containerization, Linux and Health Informatics.
 
