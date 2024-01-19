@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Your Name">
-<meta name="dcterms.date" content="2024-01-11">
+<meta name="author" content="Patrick Kaggwa">
+<meta name="dcterms.date" content="2024-01-19">
 
-<title>Patrick Data Analysis Portfolio - Manuscript/Report Template for a Data Analysis Project</title>
+<title>Patrick Data Analysis Portfolio – MADA Data Analysis Project</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -161,7 +161,8 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Manuscript/Report Template for a Data Analysis Project</h1>
+<h1 class="title">MADA Data Analysis Project</h1>
+<p class="subtitle lead">Jayne Musso contributed to this exercise</p>
 </div>
 
 
@@ -171,14 +172,14 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Your Name </p>
+             <p>Patrick Kaggwa </p>
           </div>
   </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 11, 2024</p>
+      <p class="date">January 19, 2024</p>
     </div>
   </div>
   
@@ -249,21 +250,26 @@ Table&nbsp;1: Data summary table.
 <div class="cell-output-display">
 <table class="do-not-create-environment cell table table-sm table-striped small">
 <colgroup>
+<col style="width: 3%">
 <col style="width: 5%">
+<col style="width: 3%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 6%">
 <col style="width: 7%">
 <col style="width: 5%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 8%">
-<col style="width: 9%">
-<col style="width: 6%">
-<col style="width: 5%">
 <col style="width: 5%">
 <col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 6%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -271,6 +277,11 @@ Table&nbsp;1: Data summary table.
 <th style="text-align: left;">skim_variable</th>
 <th style="text-align: right;">n_missing</th>
 <th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">character.min</th>
+<th style="text-align: right;">character.max</th>
+<th style="text-align: right;">character.empty</th>
+<th style="text-align: right;">character.n_unique</th>
+<th style="text-align: right;">character.whitespace</th>
 <th style="text-align: left;">factor.ordered</th>
 <th style="text-align: right;">factor.n_unique</th>
 <th style="text-align: left;">factor.top_counts</th>
@@ -286,10 +297,37 @@ Table&nbsp;1: Data summary table.
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">Educ</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">factor</td>
 <td style="text-align: left;">Gender</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
 <td style="text-align: left;">FALSE</td>
 <td style="text-align: right;">3</td>
 <td style="text-align: left;">M: 4, F: 3, O: 2</td>
@@ -302,11 +340,16 @@ Table&nbsp;1: Data summary table.
 <td style="text-align: right;">NA</td>
 <td style="text-align: left;">NA</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">numeric</td>
 <td style="text-align: left;">Height</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
 <td style="text-align: left;">NA</td>
 <td style="text-align: right;">NA</td>
 <td style="text-align: left;">NA</td>
@@ -319,11 +362,16 @@ Table&nbsp;1: Data summary table.
 <td style="text-align: right;">183</td>
 <td style="text-align: left;">▂▁▃▃▇</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">numeric</td>
 <td style="text-align: left;">Weight</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
 <td style="text-align: left;">NA</td>
 <td style="text-align: right;">NA</td>
 <td style="text-align: left;">NA</td>
@@ -335,6 +383,28 @@ Table&nbsp;1: Data summary table.
 <td style="text-align: right;">80</td>
 <td style="text-align: right;">110</td>
 <td style="text-align: left;">▇▂▃▂▂</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">age</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">41.66667</td>
+<td style="text-align: right;">13.39776</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">54</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: left;">▃▂▂▂▇</td>
 </tr>
 </tbody>
 </table>
@@ -445,13 +515,16 @@ Table&nbsp;2: Linear model fit table.
 </section>
 </section>
 <section id="references" class="level1" data-number="6">
-
-
-
+<h1 data-number="6"><span class="header-section-number">6</span> References</h1>
+<section id="code-used-to-create-a-boxplot-scatter-plot-and-the-new-table" class="level3" data-number="6.0.1">
+<h3 data-number="6.0.1" class="anchored" data-anchor-id="code-used-to-create-a-boxplot-scatter-plot-and-the-new-table"><span class="header-section-number">6.0.1</span> Code used to create a Boxplot, Scatter plot and the new Table</h3>
+<p>A. For the Box Plot between Education Levels and Height</p>
+<p>```</p>
 
 </section>
+</section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">6 References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-leek2015" class="csl-entry" role="listitem">
 Leek, J. T., &amp; Peng, R. D. (2015). Statistics. <span>What</span> is the question? <em>Science (New York, N.Y.)</em>, <em>347</em>(6228), 1314–1315. <a href="https://doi.org/10.1126/science.aaa6146">https://doi.org/10.1126/science.aaa6146</a>
 </div>
