@@ -238,7 +238,7 @@ div.csl-indent {
 <section id="exploratorydescriptive-analysis" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="exploratorydescriptive-analysis"><span class="header-section-number">4.1</span> Exploratory/Descriptive analysis</h2>
 <p><em>Use a combination of text/tables/figures to explore and describe your data. Show the most important descriptive results here. Additional ones should go in the supplement. Even more can be in the R and Quarto files that are part of your project.</em></p>
-<p><a href="#tbl-summarytable" class="quarto-xref">Table&nbsp;1</a> shows a summary of the data.</p>
+<p>shows a summary of the data.</p>
 <p>Note the loading of the data providing a <strong>relative</strong> path using the <code>../../</code> notation. (Two dots means a folder up). You never want to specify an <strong>absolute</strong> path like <code>C:\ahandel\myproject\results\</code> because if you share this with someone, it won’t work for them since they don’t have that path. You can also use the <code>here</code> R package to create paths. See examples of that below. <strong>I recommend the <code>here</code> package, but I’m showing the other approach here just in case you encounter it.</strong></p>
 <div class="cell">
 <div id="tbl-summarytable" class="cell quarto-float anchored">
@@ -445,14 +445,9 @@ Table&nbsp;1: Data summary table.
 <p><em>Use one or several suitable statistical/machine learning methods to analyze your data and to produce meaningful figures, tables, etc. This might again be code that is best placed in one or several separate R scripts that need to be well documented. You want the code to produce figures and data ready for display as tables, and save those. Then you load them here.</em></p>
 <p>Table2: shows a summary of a linear model fit .</p>
 <div class="cell">
-<div id="tbl-resulttable3" class="cell quarto-float anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-resulttable3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Linear model fit table.
-</figcaption>
-<div aria-describedby="tbl-resulttable3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table class="do-not-create-environment cell table table-sm table-striped small">
+<table class="table table-sm table-striped small">
+<caption>Linear model fit table.</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;">term</th>
@@ -500,9 +495,6 @@ Table&nbsp;2: Linear model fit table.
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-</figure>
 </div>
 </div>
 </section>

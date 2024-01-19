@@ -72,7 +72,7 @@ Examples of reproducible research projects can for instance be found in [@mckay2
 
 *Use a combination of text/tables/figures to explore and describe your data. Show the most important descriptive results here. Additional ones should go in the supplement. Even more can be in the R and Quarto files that are part of your project.*
 
-@tbl-summarytable shows a summary of the data.
+ shows a summary of the data.
 
 Note the loading of the data providing a **relative** path using the `../../` notation. (Two dots means a folder up). You never want to specify an **absolute** path like `C:\ahandel\myproject\results\` because if you share this with someone, it won't work for them since they don't have that path. You can also use the `here` R package to create paths. See examples of that below. **I recommend the `here` package, but I'm showing the other approach here just in case you encounter it.**
 
@@ -111,9 +111,8 @@ knitr::include_graphics(here("starter-analysis-exercise","results","figures","ed
 *Use one or several suitable statistical/machine learning methods to analyze your data and to produce meaningful figures, tables, etc. This might again be code that is best placed in one or several separate R scripts that need to be well documented. You want the code to produce figures and data ready for display as tables, and save those. Then you load them here.*
 
 Table2: shows a summary of a linear model fit .
-
 ```{r}
-#| label: tbl-resulttable3
+#| label: table
 #| tbl-cap: "Linear model fit table."
 #| echo: FALSE
 resulttable3 = readRDS(here("starter-analysis-exercise","results","tables-files","resulttable3.rds"))
