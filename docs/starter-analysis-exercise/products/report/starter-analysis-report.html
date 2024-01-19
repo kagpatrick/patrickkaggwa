@@ -9,7 +9,7 @@
 <meta name="author" content="Patrick Kaggwa">
 <meta name="dcterms.date" content="2024-01-19">
 
-<title>Patrick Data Analysis Portfolio – MADA Data Analysis Project</title>
+<title>Patrick Data Analysis Portfolio - MADA Data Analysis Project</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -417,17 +417,24 @@ Table&nbsp;1: Data summary table.
 <section id="basic-statistical-analysis" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="basic-statistical-analysis"><span class="header-section-number">4.2</span> Basic statistical analysis</h2>
 <p><em>To get some further insight into your data, if reasonable you could compute simple statistics (e.g.&nbsp;simple models with 1 predictor) to look for associations between your outcome(s) and each individual predictor variable. Though note that unless you pre-specified the outcome and main exposure, any “p&lt;0.05 means statistical significance” interpretation is not valid.</em></p>
-<p><a href="#fig-result" class="quarto-xref">Figure&nbsp;1</a> shows a scatterplot figure produced by one of the R scripts.</p>
+<p>Figure1: shows a scatterplot figure produced by one of the R scripts.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-result" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-result-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../../results/figures/height-weight-stratified.png" class="img-fluid figure-img" width="1050">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../results/figures/Weight-Age-stratified.png" class="img-fluid figure-img" width="1050"></p>
+<figcaption>Weight and Age gender.</figcaption>
+</figure>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-result-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Height and weight stratified by gender.
-</figcaption>
+</div>
+</div>
+<p>Figure2: shows a Boxplot of Height and Education Levels.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../results/figures/education-Height-stratified.png" class="img-fluid figure-img" width="1050"></p>
+<figcaption>Height and Education Levels.</figcaption>
 </figure>
 </div>
 </div>
@@ -436,14 +443,14 @@ Figure&nbsp;1: Height and weight stratified by gender.
 <section id="full-analysis" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="full-analysis"><span class="header-section-number">4.3</span> Full analysis</h2>
 <p><em>Use one or several suitable statistical/machine learning methods to analyze your data and to produce meaningful figures, tables, etc. This might again be code that is best placed in one or several separate R scripts that need to be well documented. You want the code to produce figures and data ready for display as tables, and save those. Then you load them here.</em></p>
-<p>Example <a href="#tbl-resulttable2" class="quarto-xref">Table&nbsp;2</a> shows a summary of a linear model fit.</p>
+<p>Example <strong>?@tbl-resulttable2</strong> shows a summary of a linear model fit.</p>
 <div class="cell">
-<div id="tbl-resulttable2" class="cell quarto-float anchored">
+<div id="tbl-resulttable3" class="cell quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-resulttable2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-resulttable3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;2: Linear model fit table.
 </figcaption>
-<div aria-describedby="tbl-resulttable2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="tbl-resulttable3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell table table-sm table-striped small">
 <thead>
@@ -458,31 +465,38 @@ Table&nbsp;2: Linear model fit table.
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">149.2726967</td>
-<td style="text-align: right;">23.3823360</td>
-<td style="text-align: right;">6.3839942</td>
-<td style="text-align: right;">0.0013962</td>
+<td style="text-align: right;">116.7253978</td>
+<td style="text-align: right;">14.9101494</td>
+<td style="text-align: right;">7.8285867</td>
+<td style="text-align: right;">0.0014375</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Weight</td>
-<td style="text-align: right;">0.2623972</td>
-<td style="text-align: right;">0.3512436</td>
-<td style="text-align: right;">0.7470519</td>
-<td style="text-align: right;">0.4886517</td>
+<td style="text-align: left;">age</td>
+<td style="text-align: right;">1.0822039</td>
+<td style="text-align: right;">0.2607536</td>
+<td style="text-align: right;">4.1502937</td>
+<td style="text-align: right;">0.0142569</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">GenderM</td>
-<td style="text-align: right;">-2.1244913</td>
-<td style="text-align: right;">15.5488953</td>
-<td style="text-align: right;">-0.1366329</td>
-<td style="text-align: right;">0.8966520</td>
+<td style="text-align: left;">EducGraduate</td>
+<td style="text-align: right;">0.4293852</td>
+<td style="text-align: right;">8.7286474</td>
+<td style="text-align: right;">0.0491926</td>
+<td style="text-align: right;">0.9631241</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">GenderO</td>
-<td style="text-align: right;">-4.7644739</td>
-<td style="text-align: right;">19.0114155</td>
-<td style="text-align: right;">-0.2506112</td>
-<td style="text-align: right;">0.8120871</td>
+<td style="text-align: left;">EducHigh school</td>
+<td style="text-align: right;">10.2923787</td>
+<td style="text-align: right;">8.5648274</td>
+<td style="text-align: right;">1.2017030</td>
+<td style="text-align: right;">0.2957598</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">EducUndergraduate</td>
+<td style="text-align: right;">2.4796700</td>
+<td style="text-align: right;">11.7223156</td>
+<td style="text-align: right;">0.2115341</td>
+<td style="text-align: right;">0.8428112</td>
 </tr>
 </tbody>
 </table>
@@ -491,7 +505,48 @@ Table&nbsp;2: Linear model fit table.
 </figure>
 </div>
 </div>
-<div style="page-break-after: always;"></div>
+</section>
+<section id="code-used-for-the-analysis" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="code-used-for-the-analysis"><span class="header-section-number">4.4</span> Code used for the analysis</h2>
+<pre><code>##############################################
+### Box Plot
+b1&lt;-mydata %&gt;%
+  ggplot(mapping = aes(x = `Educ`, y = Height, fill = `Educ`)) +
+  geom_boxplot() +
+  scale_fill_manual(values = c("College" = "#1f78b4", "High school" = "#33a02c", "Graduate" = "#e31a1c", "Undergraduate" = "#ff7f00")) +
+  theme_minimal() +
+  labs(x = "Education levels", y = "Height") +
+  ggtitle("Boxplot of Education Levels by Height") +
+  theme(plot.title = element_text(hjust = 0.5))  # Adjust title alignment
+b1
+figure_file = here("starter-analysis-exercise","results","figures","education-Height-stratified.png")
+ggsave(filename = figure_file, plot=b1)
+##############################################
+For the scatter Plot
+s1 &lt;- ggplot(mydata, aes(x = Weight, y = age)) +
+  geom_point() +
+  stat_smooth(method = "glm", formula = y ~ x) +
+  ggtitle("Scatterplot of Weight vs Age") +
+  labs(x = "Weight", y = "Age")
+s1
+figure_file = here("starter-analysis-exercise","results","figures","Weight-Age-stratified.png")
+ggsave(filename = figure_file, plot=s1)
+
+############################
+#### Third model fit
+# fit linear model using height as outcome, age and Educatinal Levels as predictor
+
+lmfit3 &lt;- lm(Height ~ age + Educ, mydata)  
+
+# place results from fit into a data frame with the tidy function
+lmtable3 &lt;- broom::tidy(lmfit3)
+
+#look at fit results
+print(lmtable3)
+
+# save fit results table  
+table_file3 = here("starter-analysis-exercise","results", "tables-files", "resulttable3.rds")
+saveRDS(lmtable3, file = table_file3)</code></pre>
 </section>
 </section>
 <section id="discussion" class="level1" data-number="5">
@@ -515,16 +570,13 @@ Table&nbsp;2: Linear model fit table.
 </section>
 </section>
 <section id="references" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> References</h1>
-<section id="code-used-to-create-a-boxplot-scatter-plot-and-the-new-table" class="level3" data-number="6.0.1">
-<h3 data-number="6.0.1" class="anchored" data-anchor-id="code-used-to-create-a-boxplot-scatter-plot-and-the-new-table"><span class="header-section-number">6.0.1</span> Code used to create a Boxplot, Scatter plot and the new Table</h3>
-<p>A. For the Box Plot between Education Levels and Height</p>
-<p>```</p>
+
+
+
 
 </section>
-</section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">6 References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-leek2015" class="csl-entry" role="listitem">
 Leek, J. T., &amp; Peng, R. D. (2015). Statistics. <span>What</span> is the question? <em>Science (New York, N.Y.)</em>, <em>347</em>(6228), 1314–1315. <a href="https://doi.org/10.1126/science.aaa6146">https://doi.org/10.1126/science.aaa6146</a>
 </div>

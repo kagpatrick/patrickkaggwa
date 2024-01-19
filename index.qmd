@@ -2,7 +2,9 @@
 layout: default
 ---
 
-```html
+\`\`\`html
+
+```{=html}
 <style>
   body {
     background-image: url("images/frontpage1.jpeg");
@@ -11,7 +13,7 @@ layout: default
     color: white; /* Set text color to white */
   }
 </style>
-
+```
 # Welcome to Patrick's data analysis portfolio.
 
 Please use the <a href="#menu-bar" style="color: white;">Menu Bar</a> above to look around. Have fun!
