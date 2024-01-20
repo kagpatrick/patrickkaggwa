@@ -109,7 +109,7 @@
     "href": "starter-analysis-exercise/products/report/starter-analysis-report.html",
     "title": "MADA Data Analysis Project",
     "section": "",
-    "text": "The structure below is one possible setup for a data analysis project (including the course project). For a manuscript, adjust as needed. You don’t need to have exactly these sections, but the content covering those sections should be addressed.\nThis uses MS Word as output format. See here for more information. You can switch to other formats, like html or pdf. See the Quarto documentation for other formats."
+    "text": "Write a summary of your project."
   },
   {
     "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html#general-background-information",
@@ -130,21 +130,21 @@
     "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#questionshypotheses-to-be-addressed",
     "title": "MADA Data Analysis Project",
     "section": "2.3 Questions/Hypotheses to be addressed",
-    "text": "2.3 Questions/Hypotheses to be addressed\nState the research questions you plan to answer with this analysis.\nTo cite other work (important everywhere, but likely happens first in introduction), make sure your references are in the bibtex file specified in the YAML header above (here dataanalysis_template_references.bib) and have the right bibtex key. Then you can include like this:\nExamples of reproducible research projects can for instance be found in (McKay, Ebell, Billings, et al., 2020; McKay, Ebell, Dale, Shen, & Handel, 2020)"
+    "text": "2.3 Questions/Hypotheses to be addressed"
   },
   {
     "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html#data-aquisition",
     "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#data-aquisition",
     "title": "MADA Data Analysis Project",
     "section": "3.1 Data aquisition",
-    "text": "3.1 Data aquisition\nAs applicable, explain where and how you got the data. If you directly import the data from an online source, you can combine this section with the next."
+    "text": "3.1 Data aquisition"
   },
   {
     "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html#data-import-and-cleaning",
     "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#data-import-and-cleaning",
     "title": "MADA Data Analysis Project",
     "section": "3.2 Data import and cleaning",
-    "text": "3.2 Data import and cleaning\nWrite code that reads in the file and cleans it so it’s ready for analysis. Since this will be fairly long code for most datasets, it might be a good idea to have it in one or several R scripts. If that is the case, explain here briefly what kind of cleaning/processing you do, and provide more details and well documented code somewhere (e.g. as supplement in a paper). All materials, including files that contain code, should be commented well so everyone can follow along."
+    "text": "3.2 Data import and cleaning"
   },
   {
     "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html#statistical-analysis",
@@ -158,21 +158,21 @@
     "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#exploratorydescriptive-analysis",
     "title": "MADA Data Analysis Project",
     "section": "4.1 Exploratory/Descriptive analysis",
-    "text": "4.1 Exploratory/Descriptive analysis\nUse a combination of text/tables/figures to explore and describe your data. Show the most important descriptive results here. Additional ones should go in the supplement. Even more can be in the R and Quarto files that are part of your project.\nshows a summary of the data.\nNote the loading of the data providing a relative path using the ../../ notation. (Two dots means a folder up). You never want to specify an absolute path like C:\\ahandel\\myproject\\results\\ because if you share this with someone, it won’t work for them since they don’t have that path. You can also use the here R package to create paths. See examples of that below. I recommend the here package, but I’m showing the other approach here just in case you encounter it.\n\n\n\n\nTable 1: Data summary table.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_type\nskim_variable\nn_missing\ncomplete_rate\ncharacter.min\ncharacter.max\ncharacter.empty\ncharacter.n_unique\ncharacter.whitespace\nfactor.ordered\nfactor.n_unique\nfactor.top_counts\nnumeric.mean\nnumeric.sd\nnumeric.p0\nnumeric.p25\nnumeric.p50\nnumeric.p75\nnumeric.p100\nnumeric.hist\n\n\n\n\ncharacter\nEduc\n0\n1\n7\n13\n0\n4\n0\nNA\nNA\nNA\nNA\nNA\nNA\nNA\nNA\nNA\nNA\nNA\n\n\nfactor\nGender\n0\n1\nNA\nNA\nNA\nNA\nNA\nFALSE\n3\nM: 4, F: 3, O: 2\nNA\nNA\nNA\nNA\nNA\nNA\nNA\nNA\n\n\nnumeric\nHeight\n0\n1\nNA\nNA\nNA\nNA\nNA\nNA\nNA\nNA\n165.66667\n15.97655\n133\n156\n166\n178\n183\n▂▁▃▃▇\n\n\nnumeric\nWeight\n0\n1\nNA\nNA\nNA\nNA\nNA\nNA\nNA\nNA\n70.11111\n21.24526\n45\n55\n70\n80\n110\n▇▂▃▂▂\n\n\nnumeric\nage\n0\n1\nNA\nNA\nNA\nNA\nNA\nNA\nNA\nNA\n41.66667\n13.39776\n22\n34\n45\n54\n56\n▃▂▂▂▇"
+    "text": "4.1 Exploratory/Descriptive analysis\n\n\n\n\nTable 1: Data summary table.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_type\nskim_variable\nn_missing\ncomplete_rate\ncharacter.min\ncharacter.max\ncharacter.empty\ncharacter.n_unique\ncharacter.whitespace\nfactor.ordered\nfactor.n_unique\nfactor.top_counts\nnumeric.mean\nnumeric.sd\nnumeric.p0\nnumeric.p25\nnumeric.p50\nnumeric.p75\nnumeric.p100\nnumeric.hist\n\n\n\n\ncharacter\nEduc\n0\n1\n7\n13\n0\n4\n0\nNA\nNA\nNA\nNA\nNA\nNA\nNA\nNA\nNA\nNA\nNA\n\n\nfactor\nGender\n0\n1\nNA\nNA\nNA\nNA\nNA\nFALSE\n3\nM: 4, F: 3, O: 2\nNA\nNA\nNA\nNA\nNA\nNA\nNA\nNA\n\n\nnumeric\nHeight\n0\n1\nNA\nNA\nNA\nNA\nNA\nNA\nNA\nNA\n165.66667\n15.97655\n133\n156\n166\n178\n183\n▂▁▃▃▇\n\n\nnumeric\nWeight\n0\n1\nNA\nNA\nNA\nNA\nNA\nNA\nNA\nNA\n70.11111\n21.24526\n45\n55\n70\n80\n110\n▇▂▃▂▂\n\n\nnumeric\nage\n0\n1\nNA\nNA\nNA\nNA\nNA\nNA\nNA\nNA\n41.66667\n13.39776\n22\n34\n45\n54\n56\n▃▂▂▂▇"
   },
   {
     "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html#basic-statistical-analysis",
     "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#basic-statistical-analysis",
     "title": "MADA Data Analysis Project",
     "section": "4.2 Basic statistical analysis",
-    "text": "4.2 Basic statistical analysis\nTo get some further insight into your data, if reasonable you could compute simple statistics (e.g. simple models with 1 predictor) to look for associations between your outcome(s) and each individual predictor variable. Though note that unless you pre-specified the outcome and main exposure, any “p&lt;0.05 means statistical significance” interpretation is not valid.\nFigure1: shows a scatterplot figure produced by one of the R scripts.\n\n\n\n\n\nWeight and Age gender.\n\n\n\n\nFigure2: shows a Boxplot of Height and Education Levels.\n\n\n\n\n\nHeight and Education Levels."
+    "text": "4.2 Basic statistical analysis\nFigure1: shows a scatterplot figure produced by one of the R scripts.\n\n\n\n\n\nThe scatter shows a slight postive increase in the weight of individuals with increasing age.\n\n\n\n\nFigure2: shows a Boxplot of Height and Education Levels.\n\n\n\n\n\nThe figure shows a box-plot of heights of individuals stratified by education levels."
   },
   {
     "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html#full-analysis",
     "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#full-analysis",
     "title": "MADA Data Analysis Project",
     "section": "4.3 Full analysis",
-    "text": "4.3 Full analysis\nUse one or several suitable statistical/machine learning methods to analyze your data and to produce meaningful figures, tables, etc. This might again be code that is best placed in one or several separate R scripts that need to be well documented. You want the code to produce figures and data ready for display as tables, and save those. Then you load them here.\nTable2: shows a summary of a linear model fit .\n\n\n\nLinear model fit table.\n\n\nterm\nestimate\nstd.error\nstatistic\np.value\n\n\n\n\n(Intercept)\n116.7253978\n14.9101494\n7.8285867\n0.0014375\n\n\nage\n1.0822039\n0.2607536\n4.1502937\n0.0142569\n\n\nEducGraduate\n0.4293852\n8.7286474\n0.0491926\n0.9631241\n\n\nEducHigh school\n10.2923787\n8.5648274\n1.2017030\n0.2957598\n\n\nEducUndergraduate\n2.4796700\n11.7223156\n0.2115341\n0.8428112"
+    "text": "4.3 Full analysis\nTable2: shows a summary of a linear model fit .\n\n\n\nGraduate, High school, and Undergraduate do not appear to be statistically significant as their p-values are higher than 0.05, Height of individuals increases by approximately by 1.08cm per one year increase in age.\n\n\nterm\nestimate\nstd.error\nstatistic\np.value\n\n\n\n\n(Intercept)\n116.7253978\n14.9101494\n7.8285867\n0.0014375\n\n\nage\n1.0822039\n0.2607536\n4.1502937\n0.0142569\n\n\nEducGraduate\n0.4293852\n8.7286474\n0.0491926\n0.9631241\n\n\nEducHigh school\n10.2923787\n8.5648274\n1.2017030\n0.2957598\n\n\nEducUndergraduate\n2.4796700\n11.7223156\n0.2115341\n0.8428112"
   },
   {
     "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html#summary-and-interpretation",
@@ -193,7 +193,7 @@
     "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#conclusions",
     "title": "MADA Data Analysis Project",
     "section": "5.3 Conclusions",
-    "text": "5.3 Conclusions\nWhat are the main take-home messages?\nInclude citations in your Rmd file using bibtex, the list of references will automatically be placed at the end\nThis paper (Leek & Peng, 2015) discusses types of analyses.\nThese papers (McKay, Ebell, Billings, et al., 2020; McKay, Ebell, Dale, et al., 2020) are good examples of papers published using a fully reproducible setup similar to the one shown in this template.\nNote that this cited reference will show up at the end of the document, the reference formatting is determined by the CSL file specified in the YAML header. Many more style files for almost any journal are available. You also specify the location of your bibtex reference file in the YAML. You can call your reference file anything you like, I just used the generic word references.bib but giving it a more descriptive name is probably better."
+    "text": "5.3 Conclusions\nWhat are the main take-home messages?\nInclude citations in your Rmd file using bibtex, the list of references will automatically be placed at the end\nThis paper (Leek & Peng, 2015) discusses types of analyses.\nThese papers (McKay, Ebell, Billings, et al., 2020; McKay, Ebell, Dale, Shen, & Handel, 2020) are good examples of papers published using a fully reproducible setup similar to the one shown in this template."
   },
   {
     "objectID": "starter-analysis-exercise/code/readme.html",
@@ -249,6 +249,6 @@
     "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#code-used-for-the-analysis",
     "title": "MADA Data Analysis Project",
     "section": "4.4 Code used for the analysis",
-    "text": "4.4 Code used for the analysis\n##############################################\n### Box Plot\nb1&lt;-mydata %&gt;%\n  ggplot(mapping = aes(x = `Educ`, y = Height, fill = `Educ`)) +\n  geom_boxplot() +\n  scale_fill_manual(values = c(\"College\" = \"#1f78b4\", \"High school\" = \"#33a02c\", \"Graduate\" = \"#e31a1c\", \"Undergraduate\" = \"#ff7f00\")) +\n  theme_minimal() +\n  labs(x = \"Education levels\", y = \"Height\") +\n  ggtitle(\"Boxplot of Education Levels by Height\") +\n  theme(plot.title = element_text(hjust = 0.5))  # Adjust title alignment\nb1\nfigure_file = here(\"starter-analysis-exercise\",\"results\",\"figures\",\"education-Height-stratified.png\")\nggsave(filename = figure_file, plot=b1)\n##############################################\nFor the scatter Plot\ns1 &lt;- ggplot(mydata, aes(x = Weight, y = age)) +\n  geom_point() +\n  stat_smooth(method = \"glm\", formula = y ~ x) +\n  ggtitle(\"Scatterplot of Weight vs Age\") +\n  labs(x = \"Weight\", y = \"Age\")\ns1\nfigure_file = here(\"starter-analysis-exercise\",\"results\",\"figures\",\"Weight-Age-stratified.png\")\nggsave(filename = figure_file, plot=s1)\n\n############################\n#### Third model fit\n# fit linear model using height as outcome, age and Educatinal Levels as predictor\n\nlmfit3 &lt;- lm(Height ~ age + Educ, mydata)  \n\n# place results from fit into a data frame with the tidy function\nlmtable3 &lt;- broom::tidy(lmfit3)\n\n#look at fit results\nprint(lmtable3)\n\n# save fit results table  \ntable_file3 = here(\"starter-analysis-exercise\",\"results\", \"tables-files\", \"resulttable3.rds\")\nsaveRDS(lmtable3, file = table_file3)"
+    "text": "4.4 Code used for the analysis\n\n##############################################\n### Box Plot\nb1&lt;-mydata %&gt;%\n  ggplot(mapping = aes(x = `Educ`, y = Height, fill = `Educ`)) +\n  geom_boxplot() +\n  scale_fill_manual(values = c(\"College\" = \"#1f78b4\", \"High school\" = \"#33a02c\", \"Graduate\" = \"#e31a1c\", \"Undergraduate\" = \"#ff7f00\")) +\n  theme_minimal() +\n  labs(x = \"Education levels\", y = \"Height\") +\n  ggtitle(\"Boxplot of Education Levels by Height\") +\n  theme(plot.title = element_text(hjust = 0.5))  # Adjust title alignment\nb1\nfigure_file = here(\"starter-analysis-exercise\",\"results\",\"figures\",\"education-Height-stratified.png\")\nggsave(filename = figure_file, plot=b1)\n##############################################\nFor the scatter Plot\ns1 &lt;- ggplot(mydata, aes(x = Weight, y = age)) +\n  geom_point() +\n  stat_smooth(method = \"glm\", formula = y ~ x) +\n  ggtitle(\"Scatterplot of Weight vs Age\") +\n  labs(x = \"Weight\", y = \"Age\")\ns1\nfigure_file = here(\"starter-analysis-exercise\",\"results\",\"figures\",\"Weight-Age-stratified.png\")\nggsave(filename = figure_file, plot=s1)\n\n############################\n#### Third model fit\n# fit linear model using height as outcome, age and Educatinal Levels as predictor\n\nlmfit3 &lt;- lm(Height ~ age + Educ, mydata)  \n\n# place results from fit into a data frame with the tidy function\nlmtable3 &lt;- broom::tidy(lmfit3)\n\n#look at fit results\nprint(lmtable3)\n\n# save fit results table  \ntable_file3 = here(\"starter-analysis-exercise\",\"results\", \"tables-files\", \"resulttable3.rds\")\nsaveRDS(lmtable3, file = table_file3)"
   }
 ]

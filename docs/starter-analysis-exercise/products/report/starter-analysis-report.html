@@ -191,8 +191,6 @@ div.csl-indent {
 </header>
 
 
-<p>The structure below is one possible setup for a data analysis project (including the course project). For a manuscript, adjust as needed. You don’t need to have exactly these sections, but the content covering those sections should be addressed.</p>
-<p>This uses MS Word as output format. <a href="https://quarto.org/docs/output-formats/ms-word.html">See here</a> for more information. You can switch to other formats, like html or pdf. See <a href="https://quarto.org/">the Quarto documentation</a> for other formats.</p>
 <section id="summaryabstract" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Summary/Abstract</h1>
 <p><em>Write a summary of your project.</em></p>
@@ -210,9 +208,6 @@ div.csl-indent {
 </section>
 <section id="questionshypotheses-to-be-addressed" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="questionshypotheses-to-be-addressed"><span class="header-section-number">2.3</span> Questions/Hypotheses to be addressed</h2>
-<p><em>State the research questions you plan to answer with this analysis.</em></p>
-<p>To cite other work (important everywhere, but likely happens first in introduction), make sure your references are in the bibtex file specified in the YAML header above (here <code>dataanalysis_template_references.bib</code>) and have the right bibtex key. Then you can include like this:</p>
-<p>Examples of reproducible research projects can for instance be found in <span class="citation" data-cites="mckay2020 mckay2020a">(<a href="#ref-mckay2020" role="doc-biblioref">McKay, Ebell, Billings, et al., 2020</a>; <a href="#ref-mckay2020a" role="doc-biblioref">McKay, Ebell, Dale, Shen, &amp; Handel, 2020</a>)</span></p>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
@@ -221,11 +216,9 @@ div.csl-indent {
 <p><em>Describe your methods. That should describe the data, the cleaning processes, and the analysis approaches. You might want to provide a shorter description here and all the details in the supplement.</em></p>
 <section id="data-aquisition" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="data-aquisition"><span class="header-section-number">3.1</span> Data aquisition</h2>
-<p><em>As applicable, explain where and how you got the data. If you directly import the data from an online source, you can combine this section with the next.</em></p>
 </section>
 <section id="data-import-and-cleaning" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="data-import-and-cleaning"><span class="header-section-number">3.2</span> Data import and cleaning</h2>
-<p><em>Write code that reads in the file and cleans it so it’s ready for analysis. Since this will be fairly long code for most datasets, it might be a good idea to have it in one or several R scripts. If that is the case, explain here briefly what kind of cleaning/processing you do, and provide more details and well documented code somewhere (e.g.&nbsp;as supplement in a paper). All materials, including files that contain code, should be commented well so everyone can follow along.</em></p>
 </section>
 <section id="statistical-analysis" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="statistical-analysis"><span class="header-section-number">3.3</span> Statistical analysis</h2>
@@ -237,9 +230,6 @@ div.csl-indent {
 <h1 data-number="4"><span class="header-section-number">4</span> Results</h1>
 <section id="exploratorydescriptive-analysis" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="exploratorydescriptive-analysis"><span class="header-section-number">4.1</span> Exploratory/Descriptive analysis</h2>
-<p><em>Use a combination of text/tables/figures to explore and describe your data. Show the most important descriptive results here. Additional ones should go in the supplement. Even more can be in the R and Quarto files that are part of your project.</em></p>
-<p>shows a summary of the data.</p>
-<p>Note the loading of the data providing a <strong>relative</strong> path using the <code>../../</code> notation. (Two dots means a folder up). You never want to specify an <strong>absolute</strong> path like <code>C:\ahandel\myproject\results\</code> because if you share this with someone, it won’t work for them since they don’t have that path. You can also use the <code>here</code> R package to create paths. See examples of that below. <strong>I recommend the <code>here</code> package, but I’m showing the other approach here just in case you encounter it.</strong></p>
 <div class="cell">
 <div id="tbl-summarytable" class="cell quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -416,14 +406,13 @@ Table&nbsp;1: Data summary table.
 </section>
 <section id="basic-statistical-analysis" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="basic-statistical-analysis"><span class="header-section-number">4.2</span> Basic statistical analysis</h2>
-<p><em>To get some further insight into your data, if reasonable you could compute simple statistics (e.g.&nbsp;simple models with 1 predictor) to look for associations between your outcome(s) and each individual predictor variable. Though note that unless you pre-specified the outcome and main exposure, any “p&lt;0.05 means statistical significance” interpretation is not valid.</em></p>
 <p>Figure1: shows a scatterplot figure produced by one of the R scripts.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../../results/figures/Weight-Age-stratified.png" class="img-fluid figure-img" width="1050"></p>
-<figcaption>Weight and Age gender.</figcaption>
+<figcaption>The scatter shows a slight postive increase in the weight of individuals with increasing age.</figcaption>
 </figure>
 </div>
 </div>
@@ -434,7 +423,7 @@ Table&nbsp;1: Data summary table.
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../../results/figures/education-Height-stratified.png" class="img-fluid figure-img" width="1050"></p>
-<figcaption>Height and Education Levels.</figcaption>
+<figcaption>The figure shows a box-plot of heights of individuals stratified by education levels.</figcaption>
 </figure>
 </div>
 </div>
@@ -442,12 +431,11 @@ Table&nbsp;1: Data summary table.
 </section>
 <section id="full-analysis" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="full-analysis"><span class="header-section-number">4.3</span> Full analysis</h2>
-<p><em>Use one or several suitable statistical/machine learning methods to analyze your data and to produce meaningful figures, tables, etc. This might again be code that is best placed in one or several separate R scripts that need to be well documented. You want the code to produce figures and data ready for display as tables, and save those. Then you load them here.</em></p>
 <p>Table2: shows a summary of a linear model fit .</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
-<caption>Linear model fit table.</caption>
+<caption>Graduate, High school, and Undergraduate do not appear to be statistically significant as their p-values are higher than 0.05, Height of individuals increases by approximately by 1.08cm per one year increase in age.</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;">term</th>
@@ -500,6 +488,7 @@ Table&nbsp;1: Data summary table.
 </section>
 <section id="code-used-for-the-analysis" class="level2" data-number="4.4">
 <h2 data-number="4.4" class="anchored" data-anchor-id="code-used-for-the-analysis"><span class="header-section-number">4.4</span> Code used for the analysis</h2>
+<div>
 <pre><code>##############################################
 ### Box Plot
 b1&lt;-mydata %&gt;%
@@ -539,6 +528,7 @@ print(lmtable3)
 # save fit results table  
 table_file3 = here("starter-analysis-exercise","results", "tables-files", "resulttable3.rds")
 saveRDS(lmtable3, file = table_file3)</code></pre>
+</div>
 </section>
 </section>
 <section id="discussion" class="level1" data-number="5">
@@ -556,8 +546,7 @@ saveRDS(lmtable3, file = table_file3)</code></pre>
 <p><em>What are the main take-home messages?</em></p>
 <p><em>Include citations in your Rmd file using bibtex, the list of references will automatically be placed at the end</em></p>
 <p>This paper <span class="citation" data-cites="leek2015">(<a href="#ref-leek2015" role="doc-biblioref">Leek &amp; Peng, 2015</a>)</span> discusses types of analyses.</p>
-<p>These papers <span class="citation" data-cites="mckay2020 mckay2020a">(<a href="#ref-mckay2020" role="doc-biblioref">McKay, Ebell, Billings, et al., 2020</a>; <a href="#ref-mckay2020a" role="doc-biblioref">McKay, Ebell, Dale, et al., 2020</a>)</span> are good examples of papers published using a fully reproducible setup similar to the one shown in this template.</p>
-<p>Note that this cited reference will show up at the end of the document, the reference formatting is determined by the CSL file specified in the YAML header. Many more style files for almost any journal <a href="https://www.zotero.org/styles">are available</a>. You also specify the location of your bibtex reference file in the YAML. You can call your reference file anything you like, I just used the generic word <code>references.bib</code> but giving it a more descriptive name is probably better.</p>
+<p>These papers <span class="citation" data-cites="mckay2020 mckay2020a">(<a href="#ref-mckay2020" role="doc-biblioref">McKay, Ebell, Billings, et al., 2020</a>; <a href="#ref-mckay2020a" role="doc-biblioref">McKay, Ebell, Dale, Shen, &amp; Handel, 2020</a>)</span> are good examples of papers published using a fully reproducible setup similar to the one shown in this template.</p>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
