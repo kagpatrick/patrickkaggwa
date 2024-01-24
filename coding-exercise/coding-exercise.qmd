@@ -2,4 +2,166 @@
 title: "R Coding Exercise"
 ---
 
-Placeholder file for the future R coding exercise.
+## Loading and checking data
+
+```{r}
+#loading packages
+library(dslabs)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+head(gapminder)
+
+```
+
+## Processing data
+
+```{r}
+#get an overview of data structure
+str(gapminder)
+#determine the type of object gapminder is
+class(gapminder)
+
+#  Code that assigns only the African countries to a new object/variable called africadata. 
+#Run str and summary on the new object you created.
+
+# Use subset to filter rows where Continent is "Africa"
+africadata <- subset(gapminder, continent == "Africa")
+
+# Display the structure of africadata
+str(africadata)
+
+# Display summary statistics of africadata
+summary(africadata)
+```
+
+```{r}
+#Take the africadata object and create two new objects (name them whatever you want),
+#one that contains only infant_mortality and life_expectancy and one that contains 
+#only population and life_expectancy.
+
+# Assuming africadata has columns like "infant_mortality," "life_expectancy," and "population"
+# Replace column names as per your actual data frame structure
+
+
+# Create object with only "infant_mortality" and "life_expectancy"
+subset1 <- select(africadata, infant_mortality, life_expectancy)
+
+# Create object with only "population" and "life_expectancy"
+subset2 <- select(africadata, population, life_expectancy)
+
+# Display the structure of subset1 and subset1
+str(subset1)
+str(subset2)
+# Display summary statistics of subset1
+summary(subset1)
+summary(subset2)
+```
+
+## Plotting
+
+```{r}
+#Using the new variables you created, plot life expectancy as a function of infant mortality and as a function of population size. 
+#Make two separate plots. 
+#Plot the data as points. For the plot with population size on the x-axis, set the x-axis to a log scale.
+# Plot life expectancy as a function of infant mortality
+
+# using ggplot2 package to plot 
+plot1 <- ggplot(subset1, aes(x = infant_mortality, y = life_expectancy)) +
+  geom_point() +
+  labs(title = "Life Expectancy vs. Infant Mortality",
+       x = "Infant Mortality",
+       y = "Life Expectancy")
+plot1
+
+
+```
+
+```{r}
+# Plot life expectancy as a function of population size (log scale on x-axis)
+plot2 <- ggplot(subset2, aes(x = log10(population), y = life_expectancy)) +
+  geom_point() +
+  labs(title = "Life Expectancy vs. Population Size",
+       x = "Log Population Size",
+       y = "Life Expectancy")
+plot2
+```
+
+## More data processing
+
+```{r}
+# Identify years with missing data for infant mortality
+years_with_missing_data <- unique(africadata$year[is.na(africadata$infant_mortality)])
+years_with_missing_data
+
+# Choose the year 2000 and create a new object
+africadata_2000 <- africadata[africadata$year == 2000, ]
+
+# Display the structure of africadata_2000
+str(africadata_2000)
+
+# Display summary statistics of africadata_2000
+summary(africadata_2000)
+```
+
+## More plotting
+
+```{r}
+# Plot life expectancy as a function of infant mortality for the year 2000
+plot_infant_mortality <- ggplot(africadata_2000, aes(x = infant_mortality, y = life_expectancy)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +  # Add a fitted line
+  labs(title = "Life Expectancy vs. Infant Mortality (Year 2000)",
+       x = "Infant Mortality",
+       y = "Life Expectancy") +
+  theme_hc()
+plot_infant_mortality
+```
+
+```{r}
+# Fit linear regression model for life expectancy vs. infant mortality
+model_infant_mortality <- lm(life_expectancy ~ infant_mortality, data = africadata_2000)
+summary(model_infant_mortality)
+```
+
+The linear regression model suggests a statistically significant negative relationship between infant mortality and life expectancy for the year 2000. As infant mortality increases, life expectancy is expected to decrease. The model explains a significant portion of the variability in life expectancy based on infant mortality.
+
+```{r}
+
+# Plot life expectancy as a function of population size (log scale on x-axis) for the year 2000
+plot_population_size <- ggplot(africadata_2000, aes(x = log10(population), y = life_expectancy)) +
+  geom_point() +
+    geom_smooth(method = "lm", se = FALSE, color = "blue") +  # Add a fitted line
+  labs(title = "Life Expectancy vs. Population Size (Year 2000)",
+       x = "Log Population Size",
+       y = "Life Expectancy") +
+theme_hc()
+plot_population_size
+```
+
+## Simple model fits
+
+```{r}
+# Fit linear regression model for life expectancy vs. log population size
+model_population_size <- lm(life_expectancy ~ log10(population), data = africadata_2000)
+summary(model_population_size)
+```
+
+The linear regression model suggests that, for the year 2000, there is not enough evidence to conclude a significant relationship between log-transformed population size and life expectancy. The coefficient for log-transformed population size is not statistically significant, and the model explains only a very small percentage of the variability in life expectancy.
+
+```{r}
+# Fit linear regression model with life expectancy as the outcome and infant mortality as the predictor
+fit_infant_mortality <- lm(life_expectancy ~ infant_mortality, data = africadata_2000)
+summary(fit_infant_mortality)
+```
+
+The linear regression model for the year 2000 suggests a statistically significant negative relationship between infant mortality and life expectancy. As infant mortality increases, life expectancy is expected to decrease. The model explains a significant portion of the variability in life expectancy based on infant mortality.
+
+```{r}
+# Fit linear regression model with life expectancy as the outcome and population size as the predictor
+fit_population_size <- lm(life_expectancy ~ log10(population), data = africadata_2000)
+summary(fit_population_size)
+```
+
+The linear regression model for the year 2000 suggests that there is not enough evidence to conclude a significant relationship between log-transformed population size and life expectancy. The coefficient for log-transformed population size is not statistically significant, and the model explains only a very small percentage of the variability in life expectancy.
