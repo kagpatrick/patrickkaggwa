@@ -166,18 +166,12 @@ summary(fit_population_size)
 
 The linear regression model for the year 2000 suggests that there is not enough evidence to conclude a significant relationship between log-transformed population size and life expectancy. The coefficient for log-transformed population size is not statistically significant, and the model explains only a very small percentage of the variability in life expectancy.
 
-
-
 # This section is contributed by Chaohua Li
 
 ## More data exploration (stars)
-   Choose dataset stars from the dslabs package. Details of variables in stars 
-   are listed below.
-   1. star: Name of star.
-   2. magnitude: Absolute magnitude of the star, which is a function of the 
-   star's luminosity and distance to the star.
-   3. temp: Surface temperature in degrees Kelvin (K).
-   4. type: Spectral class of star in the OBAFGKM system.
+
+Choose dataset stars from the dslabs package. Details of variables in stars are listed below. 1. star: Name of star. 2. magnitude: Absolute magnitude of the star, which is a function of the star's luminosity and distance to the star. 3. temp: Surface temperature in degrees Kelvin (K). 4. type: Spectral class of star in the OBAFGKM system.
+
 ```{r}
 #Load package dslabs and tidyverse
 library("dslabs")
@@ -188,11 +182,15 @@ head(stars)
 str(stars) 
 #check summary of stars
 summary(stars)
-```   
+```
 
 ## Processing data (stars)
-    Create star_ABKM which contains stars in the spectral classes of A/B/K/M 
-    (these classes have more than 10 stars).
+
+```         
+Create star_ABKM which contains stars in the spectral classes of A/B/K/M 
+(these classes have more than 10 stars).
+```
+
 ```{r}
 #check frequencies for the spectral class of stars
 table(stars$type)
@@ -208,8 +206,9 @@ summary(star_ABKM)
 ```
 
 ## Plotting (stars)
-  Plot absolute magnitude of a star as a function of log(surface temperature) 
-  and as a function of spectral class.
+
+Plot absolute magnitude of a star as a function of log(surface temperature) and as a function of spectral class.
+
 ```{r}
 #Scatterplot: magnitude ~ log(temp)  
 ggplot(star_ABKM, aes(log(temp), magnitude)) + 
@@ -221,15 +220,18 @@ ggplot(star_ABKM, aes(type, magnitude)) +
 ```
 
 ## Fit 2 simple linear models(stars)
-    Fit simple linear models with lm() function in R. Model 1: absolute magnitude 
-    as the outcome, and log(surface temperature) as the predictor; Model 2: 
-    absolute magnitude as the outcome, and spectral class as the predictor. 
-    Findings: Among stars of A/B/K/M spectral classes, 1 additional unit in the 
-    log(surface temperature) was significantly associated with a decrease of 7.6 
-    in the absolute magnitude (P-value<0.001); class K stars(P-value=0.014) and 
-    class M stars (P-value<0.001) had significantly higher absolute magnitude 
-    than class A stars; class B stars (P-value=0.009) had significantly lower 
-    absolute magnitude than class A stars.
+
+```         
+Fit simple linear models with lm() function in R. Model 1: absolute magnitude 
+as the outcome, and log(surface temperature) as the predictor; Model 2: 
+absolute magnitude as the outcome, and spectral class as the predictor. 
+Findings: Among stars of A/B/K/M spectral classes, 1 additional unit in the 
+log(surface temperature) was significantly associated with a decrease of 7.6 
+in the absolute magnitude (P-value<0.001); class K stars(P-value=0.014) and 
+class M stars (P-value<0.001) had significantly higher absolute magnitude 
+than class A stars; class B stars (P-value=0.009) had significantly lower 
+absolute magnitude than class A stars.
+```
 
 ```{r}
 #Linear model: magnitude~log(temp)
@@ -239,36 +241,4 @@ summary(fit1)
 #Linear model: magnitude~type
 fit2<-lm(magnitude~type, data=star_ABKM)
 summary(fit2)
-```  
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```
