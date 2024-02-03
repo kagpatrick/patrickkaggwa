@@ -1,7 +1,9 @@
 ---
 title: "Data Exercise"
 ---
-Tuberculosis (TB) remains a major global health concern, with millions of new cases reported annually. This exercise reviews and analyzes key factors associated with TB, ranging from demographic and lifestyle factors to health-related variables. The aim of analysis provides  understanding of factors associated to TB.
+
+Tuberculosis (TB) remains a major global health concern, with millions of new cases reported annually. This exercise reviews and analyzes key factors associated with TB, ranging from demographic and lifestyle factors to health-related variables. The aim of analysis provides understanding of factors associated to TB.The data used in this exercise is synthetic data and was created with the help of a generative Pre-trained Transformer 3.5 (ChatGPT3.5)
+
 ```{r}
 # Install and load necessary packages
 #install.packages("tidyverse")
@@ -10,7 +12,10 @@ library(tidyverse)
 # Set a seed for reproducibility
 set.seed(123)
 ```
+
 The set seed was used above for reproducibility reasons and randomly created n =998 observations
+
+## Data Processing
 
 ```{r}
 # Populate the dataframe with synthetic data
@@ -38,7 +43,11 @@ tb_data$tb_status <- ifelse(runif(n) < tb_data$tb_status_prob, 1, 0)  # Assign 1
 summary(tb_data)
 
 ```
-Now I will carry some visualizations for some the variables 
+
+## Data Visualizations
+
+Now I will carry some visualizations for some the variables
+
 ```{r}
 # Boxplot of Age by TB Status
 ggplot(tb_data, aes(x = factor(tb_status), y = age, fill = factor(tb_status))) +
@@ -48,6 +57,8 @@ ggplot(tb_data, aes(x = factor(tb_status), y = age, fill = factor(tb_status))) +
        y = "Age")
 
 ```
+
+The 0 = No TB and 1 = TB
 
 ```{r}
 # Boxplot of Age by Smoking Status
@@ -66,9 +77,11 @@ ggplot(tb_data, aes(x = age, fill = factor(tb_status))) +
        x = "Age",
        fill = "TB Status")
 ```
-The O = No TB and 1 = TB
 
-Now I will compare  the distribution of age across TB Status.
+The 0 = No TB and 1 = TB
+
+Now I will compare the distribution of age across TB Status.
+
 ```{r}
 # Violin Plot of Age by TB Status
 ggplot(tb_data, aes(x = factor(tb_status), y = age, fill = factor(tb_status))) +
@@ -87,7 +100,9 @@ ggplot(tb_data, aes(x = smoking_status, fill = factor(tb_status))) +
        x = "Smoking Status",
        fill = "TB Status")
 ```
+
 The bar graph shows that TB is more prevalent in smokers compared to the non smokers
+
 ```{r}
 # Creating a table stratified by TB status
 
@@ -117,28 +132,35 @@ combined_cross_tab <- do.call(cbind, cross_tab_list)
 cat("Combined Cross-tabulation Table for TB Status and Other Variables:\n")
 print(combined_cross_tab)
 ```
-The above table shows the distributions of TB status across different factors 
 
-Now I will fit the different variables to look at the association using stepwise method 
+The above table shows the distributions of TB status across different factors
+
+## Model Fitting
+
+Now I will fit the different variables to look at the association using step-wise method
+
 ```{r}
 # Fitting a logistic regression models 
 model1 <- glm(tb_status ~ age, data = tb_data, family = "binomial")
 summary(model1)
 ```
-Model1 suggests that age is a statistically significant associated with Tuberculosis with P-value < 0.05
+
+Model1 suggests that age is a statistically significant associated with Tuberculosis with P-value \< 0.05
 
 ```{r}
 model2 <- glm(tb_status ~ age + gender,
                       data = tb_data, family = "binomial")
 summary(model2)
 ```
-Model2 suggests that gender variable may not be a statistically significant predictor of TB status in this model with p-value > 0.05
+
+Model2 suggests that gender variable may not be a statistically significant predictor of TB status in this model with p-value \> 0.05
 
 ```{r}
 model3 <- glm(tb_status ~ age + gender + smoking_status,
                       data = tb_data, family = "binomial")
 summary(model3)
 ```
+
 Age and smoking status are statistically significant associated with Tuberculosis status in model3. However, the gender variable does not appear again to be statistically significant, as the p-value is above the conventional significance level.
 
 ```{r}
@@ -146,13 +168,17 @@ model4 <- glm(tb_status ~ age + gender + smoking_status + diabetes_status ,
                       data = tb_data, family = "binomial")
 summary(model4)
 ```
-Age, smoking status, and diabetes status are statistically significant associated with TB in this model4. However, the gender again does not appear to be statistically significant, as the p-value is above the conventional significance level. 
+
+Age, smoking status, and diabetes status are statistically significant associated with TB in this model4. However, the gender again does not appear to be statistically significant, as the p-value is above the conventional significance level.
+
 ```{r}
 model5 <- glm(tb_status ~ age + gender + smoking_status + diabetes_status + urban_rural_status,
                       data = tb_data, family = "binomial")
 summary(model5)
 ```
+
 Age, smoking status, diabetes status, and urban/rural status are statistically significant associated with TB in model5. However,again the gender variable does not appear to be statistically significant, as the p-value is above the conventional significance level.
 
-##Conclusion
+## Conclusion
+
 Using Akaike Information Criterion for model selection. Model 5 has the lowest AIC (1231.2), suggesting it provides a better trade-off between goodness of fit and simplicity. The inclusion of additional variables (gender, urban/rural status) doesn't necessarily improve model fit, as indicated by AIC and residual deviance.

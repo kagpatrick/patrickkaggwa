@@ -194,7 +194,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Tuberculosis (TB) remains a major global health concern, with millions of new cases reported annually. This exercise reviews and analyzes key factors associated with TB, ranging from demographic and lifestyle factors to health-related variables. The aim of analysis provides understanding of factors associated to TB.</p>
+<p>Tuberculosis (TB) remains a major global health concern, with millions of new cases reported annually. This exercise reviews and analyzes key factors associated with TB, ranging from demographic and lifestyle factors to health-related variables. The aim of analysis provides understanding of factors associated to TB.The data used in this exercise is synthetic data and was created with the help of a generative Pre-trained Transformer 3.5 (ChatGPT3.5)</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install and load necessary packages</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("tidyverse")</span></span>
@@ -215,6 +215,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The set seed was used above for reproducibility reasons and randomly created n =998 observations</p>
+<section id="data-processing" class="level2">
+<h2 class="anchored" data-anchor-id="data-processing">Data Processing</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Populate the dataframe with synthetic data</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">998</span>  <span class="co"># Number of observations</span></span>
@@ -256,6 +258,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                     Max.   :0.92414   Max.   :1.000  </code></pre>
 </div>
 </div>
+</section>
+<section id="data-visualizations" class="level2">
+<h2 class="anchored" data-anchor-id="data-visualizations">Data Visualizations</h2>
 <p>Now I will carry some visualizations for some the variables</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Boxplot of Age by TB Status</span></span>
@@ -272,6 +277,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>The 0 = No TB and 1 = TB</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Boxplot of Age by Smoking Status</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tb_data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(tb_status), <span class="at">y =</span> age, <span class="at">fill =</span> tb_status)) <span class="sc">+</span></span>
@@ -302,7 +308,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>The O = No TB and 1 = TB</p>
+<p>The 0 = No TB and 1 = TB</p>
 <p>Now I will compare the distribution of age across TB Status.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Violin Plot of Age by TB Status</span></span>
@@ -374,7 +380,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The above table shows the distributions of TB status across different factors</p>
-<p>Now I will fit the different variables to look at the association using stepwise method</p>
+</section>
+<section id="model-fitting" class="level2">
+<h2 class="anchored" data-anchor-id="model-fitting">Model Fitting</h2>
+<p>Now I will fit the different variables to look at the association using step-wise method</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fitting a logistic regression models </span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(tb_status <span class="sc">~</span> age, <span class="at">data =</span> tb_data, <span class="at">family =</span> <span class="st">"binomial"</span>)</span>
@@ -519,9 +528,13 @@ Number of Fisher Scoring iterations: 4</code></pre>
 </div>
 </div>
 <p>Age, smoking status, diabetes status, and urban/rural status are statistically significant associated with TB in model5. However,again the gender variable does not appear to be statistically significant, as the p-value is above the conventional significance level.</p>
-<p>##Conclusion Using Akaike Information Criterion for model selection. Model 5 has the lowest AIC (1231.2), suggesting it provides a better trade-off between goodness of fit and simplicity. The inclusion of additional variables (gender, urban/rural status) doesn’t necessarily improve model fit, as indicated by AIC and residual deviance.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>Using Akaike Information Criterion for model selection. Model 5 has the lowest AIC (1231.2), suggesting it provides a better trade-off between goodness of fit and simplicity. The inclusion of additional variables (gender, urban/rural status) doesn’t necessarily improve model fit, as indicated by AIC and residual deviance.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
