@@ -1,0 +1,158 @@
+---
+title: "Data Exercise"
+---
+Tuberculosis (TB) remains a major global health concern, with millions of new cases reported annually. This exercise reviews and analyzes key factors associated with TB, ranging from demographic and lifestyle factors to health-related variables. The aim of analysis provides  understanding of factors associated to TB.
+```{r}
+# Install and load necessary packages
+#install.packages("tidyverse")
+library(tidyverse)
+
+# Set a seed for reproducibility
+set.seed(123)
+```
+The set seed was used above for reproducibility reasons and randomly created n =998 observations
+
+```{r}
+# Populate the dataframe with synthetic data
+n <- 998  # Number of observations
+
+# creating and populating Variables
+tb_data <- data.frame(
+  age = sample(18:65, n, replace = TRUE),  # Sample ages from 18 to 65
+  gender = sample(c("Male", "Female"), n, replace = TRUE),  # Randomly assign gender
+  smoking_status = sample(c("Smoker", "Non-Smoker"), n, replace = TRUE),  # Randomly assign smoking status
+  diabetes_status = sample(c("Diabetic", "Non-Diabetic"), n, replace = TRUE),  # Randomly assign diabetes status
+  urban_rural_status = sample(c("Urban", "Rural"), n, replace = TRUE)  # Randomly assign urban/rural status
+)
+
+# Create associations between variables and TB status
+tb_data$tb_status_prob <- plogis(0.05 * (tb_data$age - 65) +
+                                   ifelse(tb_data$smoking_status == "Smoker", 1, 0) +
+                                   ifelse(tb_data$diabetes_status == "Diabetic", 1, 0) +
+                                   ifelse(tb_data$urban_rural_status == "Urban", 0.5, 0))  # Calculate the probability of having TB
+
+# Generate TB status based on probability
+tb_data$tb_status <- ifelse(runif(n) < tb_data$tb_status_prob, 1, 0)  # Assign 1 for TB case, 0 for not TB case
+
+# Summary statistics
+summary(tb_data)
+
+```
+Now I will carry some visualizations for some the variables 
+```{r}
+# Boxplot of Age by TB Status
+ggplot(tb_data, aes(x = factor(tb_status), y = age, fill = factor(tb_status))) +
+  geom_boxplot() +
+  labs(title = "Boxplot of Age by TB Status",
+       x = "TB Status",
+       y = "Age")
+
+```
+
+```{r}
+# Boxplot of Age by Smoking Status
+ggplot(tb_data, aes(x = factor(tb_status), y = age, fill = tb_status)) +
+  geom_boxplot() +
+  labs(title = "Boxplot of Age by tb_status",
+       x = "tb_status",
+       y = "Age")
+```
+
+```{r}
+# Histogram of Age Stratified by TB Status
+ggplot(tb_data, aes(x = age, fill = factor(tb_status))) +
+  geom_histogram(binwidth = 5, alpha = 0.7, position = "identity") +
+  labs(title = "Histogram of Age Stratified by TB Status",
+       x = "Age",
+       fill = "TB Status")
+```
+The O = No TB and 1 = TB
+
+Now I will compare  the distribution of age across TB Status.
+```{r}
+# Violin Plot of Age by TB Status
+ggplot(tb_data, aes(x = factor(tb_status), y = age, fill = factor(tb_status))) +
+  geom_violin() +
+  labs(title = "Violin Plot of Age by TB Status",
+       x = "TB Status",
+       y = "Age",
+       fill = "TB Status")
+```
+
+```{r}
+# Bar Plot of Smoking Status Stratified by TB Status
+ggplot(tb_data, aes(x = smoking_status, fill = factor(tb_status))) +
+  geom_bar(position = "dodge") +
+  labs(title = "Bar Plot of Smoking Status Stratified by TB Status",
+       x = "Smoking Status",
+       fill = "TB Status")
+```
+The bar graph shows that TB is more prevalent in smokers compared to the non smokers
+```{r}
+# Creating a table stratified by TB status
+
+# List to store cross-tabulation tables for each variable
+cross_tab_list <- list()
+
+# Cross-tabulation table for tb_status and gender
+cross_tab_gender <- table(tb_data$tb_status, tb_data$gender)
+cross_tab_list[["Gender"]] <- cross_tab_gender
+
+# Cross-tabulation table for tb_status and smoking_status
+cross_tab_smoking <- table(tb_data$tb_status, tb_data$smoking_status)
+cross_tab_list[["Smoking Status"]] <- cross_tab_smoking
+
+# Cross-tabulation table for tb_status and diabetes_status
+cross_tab_diabetes <- table(tb_data$tb_status, tb_data$diabetes_status)
+cross_tab_list[["Diabetes Status"]] <- cross_tab_diabetes
+
+# Cross-tabulation table for tb_status and urban_rural_status
+cross_tab_urban_rural <- table(tb_data$tb_status, tb_data$urban_rural_status)
+cross_tab_list[["Urban/Rural Status"]] <- cross_tab_urban_rural
+
+# Combine all cross-tabulation tables into one table using cbind
+combined_cross_tab <- do.call(cbind, cross_tab_list)
+
+# Print the combined table
+cat("Combined Cross-tabulation Table for TB Status and Other Variables:\n")
+print(combined_cross_tab)
+```
+The above table shows the distributions of TB status across different factors 
+
+Now I will fit the different variables to look at the association using stepwise method 
+```{r}
+# Fitting a logistic regression models 
+model1 <- glm(tb_status ~ age, data = tb_data, family = "binomial")
+summary(model1)
+```
+Model1 suggests that age is a statistically significant associated with Tuberculosis with P-value < 0.05
+
+```{r}
+model2 <- glm(tb_status ~ age + gender,
+                      data = tb_data, family = "binomial")
+summary(model2)
+```
+Model2 suggests that gender variable may not be a statistically significant predictor of TB status in this model with p-value > 0.05
+
+```{r}
+model3 <- glm(tb_status ~ age + gender + smoking_status,
+                      data = tb_data, family = "binomial")
+summary(model3)
+```
+Age and smoking status are statistically significant associated with Tuberculosis status in model3. However, the gender variable does not appear again to be statistically significant, as the p-value is above the conventional significance level.
+
+```{r}
+model4 <- glm(tb_status ~ age + gender + smoking_status + diabetes_status ,
+                      data = tb_data, family = "binomial")
+summary(model4)
+```
+Age, smoking status, and diabetes status are statistically significant associated with TB in this model4. However, the gender again does not appear to be statistically significant, as the p-value is above the conventional significance level. 
+```{r}
+model5 <- glm(tb_status ~ age + gender + smoking_status + diabetes_status + urban_rural_status,
+                      data = tb_data, family = "binomial")
+summary(model5)
+```
+Age, smoking status, diabetes status, and urban/rural status are statistically significant associated with TB in model5. However,again the gender variable does not appear to be statistically significant, as the p-value is above the conventional significance level.
+
+##Conclusion
+Using Akaike Information Criterion for model selection. Model 5 has the lowest AIC (1231.2), suggesting it provides a better trade-off between goodness of fit and simplicity. The inclusion of additional variables (gender, urban/rural status) doesn't necessarily improve model fit, as indicated by AIC and residual deviance.
