@@ -1,0 +1,206 @@
+---
+title: "CDC Data-Exercise"
+---
+
+## Loading and checking data
+
+```{r}
+#loading packages
+
+library(tidyverse)
+library(ggplot2)
+library(readr)
+library(gridExtra)  # for arranging plots
+
+
+```
+
+## Data Description
+
+The dataset, titled "NNDSS Table II. Tuberculosis - 2019", is sourced from the Centers for Disease Control and Prevention (CDC) through their data portal. It contains information on tuberculosis cases reported in the United States for the year 2019. The data is structured in tabular format and includes variables such as MMWR year, MMWR quarter, tuberculosis cases reported for the current quarter, previous four quarters, cumulative counts for specific years, and associated flags.
+
+You can access the dataset and find more information about it on the CDC's data portal using the following link:https://data.cdc.gov/NNDSS/NNDSS-Table-II-Tuberculosis/5avu-ff58/about_data \## Processing data
+
+## Data Expolation
+
+```{r}
+#Importing the dataset
+
+tb_data <- read_csv("tuberculosis.csv")
+
+# View the first few rows of the dataset
+head(tb_data)
+
+#Looking at column names
+colnames(tb_data)
+
+```
+
+```{r}
+#Assessing missing values using Naniar package
+
+naniar::gg_miss_var(tb_data)
+
+```
+
+## Describing the Variables
+
+1\. MMWR Quarter: This column indicates the quarter within the MMWR year to which the data corresponds. Quarters are often divided into four segments: 1 (January to March), 2 (April to June), 3 (July to September), and 4 (October to December).
+
+2.  Tuberculosis†, Cum 2016: This variable represents the cumulative number of tuberculosis cases reported up to the year 2016.
+
+3.  Tuberculosis†, Cum 2015: This variable represents the cumulative number of tuberculosis cases reported up to the year 2015.
+
+4.  Tuberculosis†, Previous 4 quarters Min: This column likely represents the minimum number of tuberculosis cases reported in the previous four quarters.
+
+5.  Tuberculosis†, Previous 4 quarters Max: This column likely represents the maximum number of tuberculosis cases reported in the previous four quarters.
+
+```{r}
+# creating a new dataset from the above defined variable using subsetting and renaming the variables 
+
+# Subset and rename variables
+newtb_data <- tb_data %>%
+  subset(select = c("MMWR Quarter", 
+                     "Tuberculosis†, Previous 4 quarters Min", 
+                     "Tuberculosis†, Previous 4 quarters Max", 
+                     "Tuberculosis†, Cum 2016", 
+                     "Tuberculosis†, Cum 2015")) %>%
+  rename(
+    "mmwr_quarter" = "MMWR Quarter",
+    "tb_prev_4_q_min" = "Tuberculosis†, Previous 4 quarters Min",
+    "tb_prev_4_q_max" = "Tuberculosis†, Previous 4 quarters Max",
+    "tbcases_2016" = "Tuberculosis†, Cum 2016",
+    "tbcases_2015" = "Tuberculosis†, Cum 2015"
+  )
+
+
+# Display the first few rows of the new data frame (newtb_data)
+head(newtb_data)
+
+#Looking at column names
+colnames(tb_data)
+```
+
+##Now looking at the missings in the newdata
+
+```{r}
+# Visualize missing values for each variable using gg_miss_var from naniar package
+naniar::gg_miss_var(newtb_data)
+
+```
+
+```{r}
+# Looking at the structure of the newtb_data 
+str(newtb_data)
+```
+
+```{r}
+# Convert mmwr_quarter to factor
+newtb_data$mmwr_quarter <- as.factor(newtb_data$mmwr_quarter)
+str(newtb_data)
+```
+
+## Visualization
+
+```{r}
+# Load necessary libraries
+library(ggplot2)  # for creating plots
+
+
+# Create histograms for each variable
+histograms <- list(
+  # Histogram for Tuberculosis Previous 4 Quarters Min
+  ggplot(newtb_data, aes(x = tb_prev_4_q_min)) +
+    geom_histogram(fill = "blue", color = "black", bins = 20) +
+    labs(x = "Tuberculosis Previous 4 Quarters Min", y = "Frequency", 
+         title = "Histogram of Tuberculosis Previous 4 Quarters Min"),
+  
+  # Histogram for Tuberculosis Previous 4 Quarters Max
+  ggplot(newtb_data, aes(x = tb_prev_4_q_max)) +
+    geom_histogram(fill = "blue", color = "black", bins = 20) +
+    labs(x = "Tuberculosis Previous 4 Quarters Max", y = "Frequency", 
+         title = "Histogram of Tuberculosis Previous 4 Quarters Max"),
+  
+  # Histogram for Tuberculosis Cases 2016
+  ggplot(newtb_data, aes(x = tbcases_2016)) +
+    geom_histogram(fill = "blue", color = "black", bins = 20) +
+    labs(x = "Tuberculosis Cases 2016", y = "Frequency", 
+         title = "Histogram of Tuberculosis Cases 2016"),
+  
+  # Histogram for Tuberculosis Cases 2015
+  ggplot(newtb_data, aes(x = tbcases_2015)) +
+    geom_histogram(fill = "blue", color = "black", bins = 20) +
+    labs(x = "Tuberculosis Cases 2015", y = "Frequency", 
+         title = "Histogram of Tuberculosis Cases 2015")
+)
+
+# Display histograms side by side
+grid.arrange(grobs = histograms, ncol = 2)
+
+
+
+```
+
+```{r}
+
+# Create a box plot of Tuberculosis Previous 4 Quarters Min by MMWR Quarter
+ggplot(newtb_data, aes(x = factor(mmwr_quarter), y = tb_prev_4_q_min, fill = factor(mmwr_quarter))) +
+  
+  # Add a box plot layer with dodged position
+  geom_boxplot(position = position_dodge(width = 0.8)) +
+  
+  # Label the x-axis as "MMWR Quarter" and y-axis as "Tuberculosis Previous 4 Quarters Min"
+  labs(x = "MMWR Quarter", y = "Tuberculosis Previous 4 Quarters Min",
+       title = "Box Plot of Tuberculosis Previous 4 Quarters Min by MMWR Quarter")
+
+```
+
+```{r}
+  
+  # Create a box plot of Tuberculosis Previous 4 Quarters Max by MMWR Quarter
+ggplot(newtb_data, aes(x = factor(mmwr_quarter), y = tb_prev_4_q_max, fill = factor(mmwr_quarter))) +
+
+  # Add a box plot layer with dodged position
+  geom_boxplot(position = position_dodge(width = 10)) +
+  
+  # Label the x-axis as "MMWR Quarter" and y-axis as "Tuberculosis Previous 4 Quarters Max"
+  labs(x = "MMWR Quarter", y = "Tuberculosis Previous 4 Quarters Max",
+       title = "Box Plot of Tuberculosis Previous 4 Quarters Max by MMWR Quarter")
+
+```
+
+```{r}
+  # Create a box plot of Tuberculosis Cases 2016 by MMWR Quarter
+ggplot(newtb_data, aes(x = factor(mmwr_quarter), y = tbcases_2016, fill = factor(mmwr_quarter))) +
+
+  # Add a box plot layer with dodged position
+  geom_boxplot(position = position_dodge(width = 10)) +
+  
+  # Label the x-axis as "MMWR Quarter" and y-axis as "Tuberculosis Cases 2016"
+  labs(x = "MMWR Quarter", y = "Tuberculosis Cases 2016",
+       title = "Box Plot of Tuberculosis Cases 2016 by MMWR Quarter")
+
+  
+  
+```
+
+```{r}
+# Create a box plot of Tuberculosis Cases 2015 by MMWR Quarter
+ggplot(newtb_data, aes(x = factor(mmwr_quarter), y = tbcases_2015, fill = factor(mmwr_quarter))) +
+
+  # Add a box plot layer with dodged position
+  geom_boxplot(position = position_dodge(width = 10)) +
+  
+  # Label the x-axis as "MMWR Quarter" and y-axis as "Tuberculosis Cases 2015"
+  labs(x = "MMWR Quarter", y = "Tuberculosis Cases 2015",
+       title = "Box Plot of Tuberculosis Cases 2015 by MMWR Quarter")
+
+
+
+```
+
+## Data Summary 
+
+```{r}
+summary(newtb_data)
+```

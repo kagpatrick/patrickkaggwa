@@ -19,7 +19,9 @@ website:
           - text: "Tidy Tuesday Exercise"
             file: tidytuesday-exercise/tidytuesday-exercise.qmd
           - text: "Data Exercise"
-            file: data-exercise/data-exercise.qmd            
+            file: data-exercise/data-exercise.qmd   
+          - text: "CDC Exercise"
+            file: cdcdata-exercise/cdcdata-exercise.qmd  
     right:
       - icon: github 
         href: https://github.com/kagpatrick/patrickkaggwa-MADA-portfolio        
