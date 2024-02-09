@@ -287,13 +287,13 @@ histograms <- list(
          title = "Histogram of Tuberculosis Previous 4 Quarters Max"),
   
   # Histogram for Tuberculosis Cases 2016
-  ggplot(newtb_data_rt, aes(x = tbcases_2016)) +
+  ggplot(newtb_data_rt, aes(x = tb_cases_2016)) +
     geom_histogram(fill = "blue", color = "black", bins = 20) +
     labs(x = "Tuberculosis Cases 2016", y = "Frequency", 
          title = "Histogram of Tuberculosis Cases 2016"),
   
   # Histogram for Tuberculosis Cases 2015
-  ggplot(newtb_data_rt, aes(x = tbcases_2015)) +
+  ggplot(newtb_data_rt, aes(x = tb_cases_2015)) +
     geom_histogram(fill = "blue", color = "black", bins = 20) +
     labs(x = "Tuberculosis Cases 2015", y = "Frequency", 
          title = "Histogram of Tuberculosis Cases 2015")
@@ -304,7 +304,7 @@ grid.arrange(grobs = histograms, ncol = 2)
 ```
 
 
-The histograms for the variables "tb_prev_4_q_min" and "tb_prev_4_q_max" show an approximately normal distribution, but the histograms for the variables "tbcases_2016" and "tbcases_2015" do not show an approximately normal distribution. The histograms in the new synthetic dataset look very similar to the histograms in the original processed dataset for the variables "tbcases_2016" and "tbcases_2015" but not for the variables "tb_prev_4_q_min" and "tb_prev_4_q_max".
+The histograms for the variables "tb_prev_4_q_min" and "tb_prev_4_q_max" show an approximately normal distribution, but the histograms for the variables "tb_cases_2016" and "tb_cases_2015" do not show an approximately normal distribution. The histograms in the new synthetic dataset look slightly similar to the histograms in the original processed dataset for the variables "tb_cases_2016" and "tb_cases_2015" but not for the variables "tb_prev_4_q_min" and "tb_prev_4_q_max".
 
 
 ```{r}
@@ -341,7 +341,7 @@ The box plots for tuberculosis for the previous four MMWR quarters (max) show an
 
 ```{r}
   # Create a box plot of Tuberculosis Cases 2016 by MMWR Quarter
-ggplot(newtb_data_rt, aes(x = factor(mmwr_quarter), y = tbcases_2016, fill = factor(mmwr_quarter))) +
+ggplot(newtb_data_rt, aes(x = factor(mmwr_quarter), y = tb_cases_2016, fill = factor(mmwr_quarter))) +
 
   # Add a box plot layer with dodged position
   geom_boxplot(position = position_dodge(width = 10)) +
@@ -352,12 +352,12 @@ ggplot(newtb_data_rt, aes(x = factor(mmwr_quarter), y = tbcases_2016, fill = fac
 ```
 
 
-The box plots for tuberculosis cases in 2016 for different MMWR quarters are positively skewed with some outliers. The box plots in the new synthetic dataset are very similar to the box plots in the original processed dataset.
+The box plots for tuberculosis cases in 2016 for different MMWR quarters are positively skewed with some outliers. The box plots in the new synthetic dataset are somewhat similar to the box plots in the original processed dataset.
 
 
 ```{r}
 # Create a box plot of Tuberculosis Cases 2015 by MMWR Quarter
-ggplot(newtb_data_rt, aes(x = factor(mmwr_quarter), y = tbcases_2015, fill = factor(mmwr_quarter))) +
+ggplot(newtb_data_rt, aes(x = factor(mmwr_quarter), y = tb_cases_2015, fill = factor(mmwr_quarter))) +
 
   # Add a box plot layer with dodged position
   geom_boxplot(position = position_dodge(width = 10)) +
@@ -368,5 +368,5 @@ ggplot(newtb_data_rt, aes(x = factor(mmwr_quarter), y = tbcases_2015, fill = fac
 ```
 
 
-The box plots for tuberculosis cases in 2015 for different MMWR quarters are positively skewed with some outliers. The box plots in the new synthetic dataset are very similar to the box plots in the original processed dataset.
+The box plots for tuberculosis cases in 2015 for different MMWR quarters show an approximate normal distribution. The box plots in the new synthetic dataset are not similar to the box plots in the original processed dataset.
 
