@@ -21,7 +21,7 @@ The dataset, titled "NNDSS Table II. Tuberculosis - 2019", is sourced from the C
 
 You can access the dataset and find more information about it on the CDC's data portal using the following link:https://data.cdc.gov/NNDSS/NNDSS-Table-II-Tuberculosis/5avu-ff58/about_data \## Processing data
 
-## Data Expolation
+## Data Exploration
 
 ```{r}
 #Importing the dataset
@@ -204,3 +204,169 @@ ggplot(newtb_data, aes(x = factor(mmwr_quarter), y = tbcases_2015, fill = factor
 ```{r}
 summary(newtb_data)
 ```
+
+
+## This section is contributed by Ranni Tewfik.
+
+
+## Part 1 - Generating the Synthetic Dataset
+
+
+```{r}
+#Explore the five variables in the original processed data
+table(newtb_data$mmwr_quarter)
+summary(newtb_data$tb_prev_4_q_min)
+summary(newtb_data$tb_prev_4_q_max)
+summary(newtb_data$tbcases_2016)
+summary(newtb_data$tbcases_2015)
+
+#Load required R package
+library(dplyr)
+
+#Set seed for reproducibility
+set.seed(123)
+
+#Define number of individuals for each mmwr_quarter level
+mmwr_quarter_levels <- c(rep(1, 58), rep(2, 62), rep(3, 57), rep(4, 51))
+
+#Generate mmwr_quarter variable
+mmwr_quarter <- factor(sample(mmwr_quarter_levels))
+
+#Generate other variables based on specified distributions
+tb_prev_4_q_min <- round(rnorm(228, mean = 18.15, sd = 10))
+tb_prev_4_q_min <- pmax(tb_prev_4_q_min, 0)
+
+tb_prev_4_q_max <- round(rnorm(228, mean = 44.82, sd = 20))
+tb_prev_4_q_max <- pmax(tb_prev_4_q_max, 0)
+
+tb_cases_2016 <- round(rnorm(228, mean = 67.33, sd = 50))
+tb_cases_2016 <- pmax(tb_cases_2016, 1)
+tb_cases_2016[sample(1:228, 22)] <- NA
+
+tb_cases_2015 <- round(rnorm(228, mean = 80.31, sd = 60))
+tb_cases_2015 <- pmax(tb_cases_2015, 1)
+tb_cases_2015[sample(1:228, 7)] <- NA
+
+#Create the synthetic dataset
+newtb_data_rt <- data.frame(
+  mmwr_quarter = mmwr_quarter,
+  tb_prev_4_q_min = tb_prev_4_q_min,
+  tb_prev_4_q_max = tb_prev_4_q_max,
+  tb_cases_2016 = tb_cases_2016,
+  tb_cases_2015 = tb_cases_2015)
+
+#Get an overview and summary of the data
+str(newtb_data_rt)
+summary(newtb_data_rt)
+```
+
+
+First, I explored the original processed dataset "newtb_data" to better understand the variables and their distributions. I used ChatGPT to help me produce the synthetic dataset "newtb_data_rt" with the same structure as "newtb_data".
+
+ChatGPT prompt:
+
+"Write R code that generates a dataset of 228 individuals with five variables: mmwr_quarter, tb_prev_4_q_min, tb_prev_4_q_max, tbcases_2016, and tbcases_2015. The variable mmwr_quarter is a factor variable and has four levels: level 1 with 58 individuals, level 2 with 62 individuals, level 3 with 57 individuals, and level 4 with 51 individuals. The variable tb_prev_4_q_min is numerical with whole integers ranging from 0 to 322, median is 8, and mean is 18.15. The variable tb_prev_4_q_max is numerical with whole integers ranging from 0 to 610, median is 24, and mean is 44.82. The variable tb_cases_2016 is numerical with whole integers ranging from 1 to 735, median is 33, mean is 67.33, and 22 individuals with missing value. The variable tb_cases_2015 is numerical with whole integers ranging from 1 to 1331, median is 36, mean is 80.31, and 7 individuals with missing value. Add thorough documentation to the R code."
+
+
+## Part 2 - Exploring the Synthetic Dataset
+
+
+```{r}
+# Create histograms for each variable
+histograms <- list(
+  # Histogram for Tuberculosis Previous 4 Quarters Min
+  ggplot(newtb_data_rt, aes(x = tb_prev_4_q_min)) +
+    geom_histogram(fill = "blue", color = "black", bins = 20) +
+    labs(x = "Tuberculosis Previous 4 Quarters Min", y = "Frequency", 
+         title = "Histogram of Tuberculosis Previous 4 Quarters Min"),
+  
+  # Histogram for Tuberculosis Previous 4 Quarters Max
+  ggplot(newtb_data_rt, aes(x = tb_prev_4_q_max)) +
+    geom_histogram(fill = "blue", color = "black", bins = 20) +
+    labs(x = "Tuberculosis Previous 4 Quarters Max", y = "Frequency", 
+         title = "Histogram of Tuberculosis Previous 4 Quarters Max"),
+  
+  # Histogram for Tuberculosis Cases 2016
+  ggplot(newtb_data_rt, aes(x = tb_cases_2016)) +
+    geom_histogram(fill = "blue", color = "black", bins = 20) +
+    labs(x = "Tuberculosis Cases 2016", y = "Frequency", 
+         title = "Histogram of Tuberculosis Cases 2016"),
+  
+  # Histogram for Tuberculosis Cases 2015
+  ggplot(newtb_data_rt, aes(x = tb_cases_2015)) +
+    geom_histogram(fill = "blue", color = "black", bins = 20) +
+    labs(x = "Tuberculosis Cases 2015", y = "Frequency", 
+         title = "Histogram of Tuberculosis Cases 2015")
+)
+
+# Display histograms side by side
+grid.arrange(grobs = histograms, ncol = 2)
+```
+
+
+The histograms for the variables "tb_prev_4_q_min" and "tb_prev_4_q_max" show an approximately normal distribution, but the histograms for the variables "tb_cases_2016" and "tb_cases_2015" do not show an approximately normal distribution. The histograms in the new synthetic dataset look slightly similar to the histograms in the original processed dataset for the variables "tb_cases_2016" and "tb_cases_2015" but not for the variables "tb_prev_4_q_min" and "tb_prev_4_q_max".
+
+
+```{r}
+# Create a box plot of Tuberculosis Previous 4 Quarters Min by MMWR Quarter
+ggplot(newtb_data_rt, aes(x = factor(mmwr_quarter), y = tb_prev_4_q_min, fill = factor(mmwr_quarter))) +
+  
+  # Add a box plot layer with dodged position
+  geom_boxplot(position = position_dodge(width = 0.8)) +
+  
+  # Label the x-axis as "MMWR Quarter" and y-axis as "Tuberculosis Previous 4 Quarters Min"
+  labs(x = "MMWR Quarter", y = "Tuberculosis Previous 4 Quarters Min",
+       title = "Box Plot of Tuberculosis Previous 4 Quarters Min by MMWR Quarter")
+```
+
+
+The box plots for tuberculosis for the previous four MMWR quarters (min) show an approximately normal distribution, however, MMWR Quarters 3 and 4 are slightly positively skewed. The box plots in the original processed dataset have more positive skew and more outliers compared with the box plots in the new synthetic data set.
+
+
+```{r}
+  # Create a box plot of Tuberculosis Previous 4 Quarters Max by MMWR Quarter
+ggplot(newtb_data_rt, aes(x = factor(mmwr_quarter), y = tb_prev_4_q_max, fill = factor(mmwr_quarter))) +
+
+  # Add a box plot layer with dodged position
+  geom_boxplot(position = position_dodge(width = 10)) +
+  
+  # Label the x-axis as "MMWR Quarter" and y-axis as "Tuberculosis Previous 4 Quarters Max"
+  labs(x = "MMWR Quarter", y = "Tuberculosis Previous 4 Quarters Max",
+       title = "Box Plot of Tuberculosis Previous 4 Quarters Max by MMWR Quarter")
+```
+
+
+The box plots for tuberculosis for the previous four MMWR quarters (max) show an approximately normal distribution. The box plots in the original processed dataset have more positive skew and more outliers compared with the box plots in the new synthetic data set.
+
+
+```{r}
+  # Create a box plot of Tuberculosis Cases 2016 by MMWR Quarter
+ggplot(newtb_data_rt, aes(x = factor(mmwr_quarter), y = tb_cases_2016, fill = factor(mmwr_quarter))) +
+
+  # Add a box plot layer with dodged position
+  geom_boxplot(position = position_dodge(width = 10)) +
+  
+  # Label the x-axis as "MMWR Quarter" and y-axis as "Tuberculosis Cases 2016"
+  labs(x = "MMWR Quarter", y = "Tuberculosis Cases 2016",
+       title = "Box Plot of Tuberculosis Cases 2016 by MMWR Quarter")
+```
+
+
+The box plots for tuberculosis cases in 2016 for different MMWR quarters are positively skewed with some outliers. The box plots in the new synthetic dataset are somewhat similar to the box plots in the original processed dataset.
+
+
+```{r}
+# Create a box plot of Tuberculosis Cases 2015 by MMWR Quarter
+ggplot(newtb_data_rt, aes(x = factor(mmwr_quarter), y = tb_cases_2015, fill = factor(mmwr_quarter))) +
+
+  # Add a box plot layer with dodged position
+  geom_boxplot(position = position_dodge(width = 10)) +
+  
+  # Label the x-axis as "MMWR Quarter" and y-axis as "Tuberculosis Cases 2015"
+  labs(x = "MMWR Quarter", y = "Tuberculosis Cases 2015",
+       title = "Box Plot of Tuberculosis Cases 2015 by MMWR Quarter")
+```
+
+
+The box plots for tuberculosis cases in 2015 for different MMWR quarters show an approximate normal distribution. The box plots in the new synthetic dataset are not similar to the box plots in the original processed dataset.
+
