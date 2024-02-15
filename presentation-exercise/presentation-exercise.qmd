@@ -6,7 +6,9 @@ title: "Presentation Exercise"
 
 The data used contains season-level advanced stats for WNBA players by team for the 1997-2019 seasons, from [Basketball-Reference.com](https://www.basketball-reference.com/). It also contains `Composite Rating`, which blends PER and Win Shares per 40 into a single metric that mimics [RAPTOR player ratings](https://fivethirtyeight.com/features/introducing-raptor-our-new-metric-for-the-modern-nba/).
 
-This the original Image to be reproduced [![](images/Screenshot%202024-02-15%20at%2012.38.54%20AM.png){fig-align="center"}](https://github.com/kagpatrick/patrickkaggwa-MADA-portfolio)
+This the original Image to be reproduced
+
+[![](/images/image1.png)](https://github.com/kagpatrick/patrickkaggwa-MADA-portfolio)
 
 Prompted chatgpt for the code: Prompt: Please generate R code to visualize demographic data, including variables such as race, income, age, and education, segmented by voter category. Ensure that each variable is plotted as a bar graph with custom colors for the voter categories and arrange the plots in a grid with two columns. After I adjusted the code to try fit what I wanted.
 
@@ -103,7 +105,7 @@ suppressWarnings(wnba_player_stats <- read_csv("wnba-player-stats.csv", show_col
 
 The data used contains season-level advanced stats for WNBA players by team for the 1997-2019 seasons, from [Basketball-Reference.com](https://www.basketball-reference.com/). It also contains `Composite Rating`, which blends PER and Win Shares per 40 into a single metric that mimics [RAPTOR player ratings](https://fivethirtyeight.com/features/introducing-raptor-our-new-metric-for-the-modern-nba/). I prompted chatgpt that produced a code, I didn't use it but it guided to write mine.
 
-The original table to be reproduced. \## [![](/images/Screenshot%202024-02-15%20at%2012.39.52%20AM.png)](https://github.com/kagpatrick/patrickkaggwa-MADA-portfolio)
+The original table to be reproduced. [![](/images/image2.png)](https://github.com/kagpatrick/patrickkaggwa-MADA-portfolio)
 
 ```{r}
 
