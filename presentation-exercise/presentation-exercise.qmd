@@ -4,7 +4,7 @@ title: "Presentation Exercise"
 
 ## About Data
 
-The data used contains season-level advanced stats for WNBA players by team for the 1997-2019 seasons, from [Basketball-Reference.com](https://www.basketball-reference.com/). It also contains `Composite Rating`, which blends PER and Win Shares per 40 into a single metric that mimics [RAPTOR player ratings](https://fivethirtyeight.com/features/introducing-raptor-our-new-metric-for-the-modern-nba/).
+The data was about the poll that was conducted from Sept. 15 to Sept. 25 among a sample of U.S. citizens that oversampled young, Black and Hispanic respondents, with 8,327 respondents, and was weighted according to general population benchmarks for U.S. citizens from the U.S.
 
 This the original Image to be reproduced
 
