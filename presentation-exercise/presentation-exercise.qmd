@@ -25,7 +25,7 @@ suppressPackageStartupMessages({
 
 # Read the CSV file without displaying column types
 suppressMessages({
-  nonvoters <- read_csv("nonvoters_data.csv", show_col_types = FALSE)
+  nonvoters <- read_csv("nonvoters_data1.csv", show_col_types = FALSE)
 })
 
 ```
@@ -55,8 +55,8 @@ fixed_aspect_ratio <- theme(aspect.ratio = 1)
 # Centered title theme
 centered_title_theme <- theme(
   plot.title = element_text(hjust = 0.5, size = 10),  # Set title size to 10
-  axis.text.y = element_text(size = 8),  # Set y-axis text size to 8
-  axis.title = element_text(size = 10)  # Set axis title size to 10
+  axis.text.y = element_text(size = 6),  # Set y-axis text size to 8
+  axis.title = element_text(size = 8)  # Set axis title size to 10
 )
 
 # Create individual plots
