@@ -25,7 +25,7 @@ suppressPackageStartupMessages({
 
 # Read the CSV file without displaying column types
 suppressMessages({
-  nonvoters <- read_csv("nonvoters_data1.csv", show_col_types = FALSE)
+  nonvoters <- read_csv("nonvoters_data.csv", show_col_types = FALSE)
 })
 
 ```
