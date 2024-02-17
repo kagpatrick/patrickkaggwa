@@ -107,11 +107,11 @@ plot_party <- ggplot(nonvoters, aes(x = Q30, fill = voter_category)) +
   theme(plot.title = element_text(hjust = 0.5))
 
 # Arrange plots in a grid
-ggpubr::ggarrange	(plot_race + theme(aspect.ratio = 1),
-          plot_income + theme(aspect.ratio = 1),
-          plot_age + theme(aspect.ratio = 1),
-          plot_education + theme(aspect.ratio = 1),
-          plot_party + theme(aspect.ratio = 1))
+ggpubr::ggarrange(plot_race,
+          plot_income ,
+          plot_age ,
+          plot_education ,
+          plot_party )
 
 
 ```
