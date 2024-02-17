@@ -20,11 +20,12 @@ suppressPackageStartupMessages({
   library(gridExtra)
   library(readr)
   library(dplyr)
+  library(patchwork)
 })
 
 # Read the CSV file without displaying column types
 suppressMessages({
-  nonvoters <- read_csv("nonvoters_data.csv", show_col_types = FALSE)
+  nonvoters <- read_csv("nonvoters_data1.csv", show_col_types = FALSE)
 })
 
 ```
@@ -36,6 +37,14 @@ nonvoters <- nonvoters %>%
                                ifelse(ppage >= 35 & ppage <= 49, "35-49",
                                       ifelse(ppage >= 50 & ppage <= 64, "50-64", "65+"))))
 
+# creating new labels for the party ID represented by Q30
+nonvoters <- nonvoters %>%
+  mutate(Q30 = case_when(
+    Q30 == 1 ~ "DEMOCRATIC",
+    Q30 == 2 ~ "REPUBLICAN",
+    Q30 == 3 ~ "INDEPENDENT",
+    TRUE ~ as.character(Q30)
+  ))
 ```
 
 ```{r}
@@ -86,8 +95,23 @@ plot_education <- ggplot(nonvoters, aes(x = educ, fill = voter_category)) +
   ggtitle("Education") +
   theme(plot.title = element_text(hjust = 0.5))
 
+# Plot party id by voter category
+plot_party <- ggplot(nonvoters, aes(x = Q30, fill = voter_category)) +
+  geom_bar(position = "fill") +
+  labs(x = "Party ID", y = "Percentage", fill = "") +
+  scale_fill_manual(values = custom_colors) +
+  theme_minimal() +
+ theme(legend.position = "bottom", axis.title.y = element_blank(), axis.title.x = element_blank()) +
+  coord_flip() +
+  ggtitle("Party ID") +
+  theme(plot.title = element_text(hjust = 0.5))
+
 # Arrange plots in a grid
-grid.arrange(plot_race, plot_income, plot_age, plot_education, ncol = 2)
+ggpubr::ggarrange	(plot_race + theme(aspect.ratio = 1),
+          plot_income + theme(aspect.ratio = 1),
+          plot_age + theme(aspect.ratio = 1),
+          plot_education + theme(aspect.ratio = 1),
+          plot_party + theme(aspect.ratio = 1))
 
 
 ```
