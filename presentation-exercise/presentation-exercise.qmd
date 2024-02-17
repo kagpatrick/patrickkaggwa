@@ -48,69 +48,84 @@ nonvoters <- nonvoters %>%
 ```
 
 ```{r}
-# Define custom colors for voter categories
-custom_colors <- c("#ffbc00", "#e082ad", "#ae4dff")
 
-# Plot race by voter category
-plot_race <- ggplot(nonvoters, aes(x = race, fill = voter_category)) +
-  geom_bar(position = "fill") +
-  labs(x = "Race", y = "Percentage", fill = "Voter Category") +
-  scale_fill_manual(values = custom_colors) +
-  theme_minimal() +
-  theme(legend.position = "", axis.title.y = element_blank(), axis.title.x = element_blank()) +
-  coord_flip() +
-  ggtitle("Race") +
-  theme(plot.title = element_text(hjust = 0.5))
+# Set a fixed aspect ratio for all plots
+fixed_aspect_ratio <- theme(aspect.ratio = 1)
 
-# Plot income by voter category
-plot_income <- ggplot(nonvoters, aes(x = income_cat, fill = voter_category)) +
-  geom_bar(position = "fill") +
-  labs(x = "Income", y = "Percentage", fill = "Voter Category") +
-  scale_fill_manual(values = custom_colors) +
-  theme_minimal() +
-  theme(legend.position = "", axis.title.y = element_blank(), axis.title.x = element_blank()) +
-  coord_flip() +
-  ggtitle("Income") +
-  theme(plot.title = element_text(hjust = 0.5))
+# Centered title theme
+centered_title_theme <- theme(
+  plot.title = element_text(hjust = 0.5, size = 10),  # Set title size to 10
+  axis.text.y = element_text(size = 8),  # Set y-axis text size to 8
+  axis.title = element_text(size = 10)  # Set axis title size to 10
+)
 
-# Plot Age by voter category
-plot_age <- ggplot(nonvoters, aes(x = Age, fill = voter_category)) +
-  geom_bar(position = "fill") +
-  labs(x = "Age", y = "Percentage", fill = "Voter Category") +
-  scale_fill_manual(values = custom_colors) +
+# Create individual plots
+plot_race <- ggplot(nonvoters, aes(y = race, fill = voter_category)) +
+  geom_bar(position = "fill", show.legend = FALSE) +  # Add show.legend parameter to show legend
+  labs(title = "Race",
+       y = "",
+       x = "") +
+  scale_fill_manual(values = c("#ffbc00", "#e082ad", "#ae4dff"),
+                    name = "Voter Category") +  # Add legend title
+  scale_x_continuous(labels = function(x) sprintf("%.0f", x * 100), position = "top") +
   theme_minimal() +
-  theme(legend.position = "", axis.title.y = element_blank(), axis.title.x = element_blank()) +
-  coord_flip() +
-  ggtitle("Age") +
-  theme(plot.title = element_text(hjust = 0.5))
+  fixed_aspect_ratio +
+  centered_title_theme  # Apply centered title theme
 
-# Plot education by voter category
-plot_education <- ggplot(nonvoters, aes(x = educ, fill = voter_category)) +
-  geom_bar(position = "fill") +
-  labs(x = "Education", y = "Percentage", fill = "Voter Category") +
-  scale_fill_manual(values = custom_colors) +
+# Create individual plots
+plot_income <- ggplot(nonvoters, aes(y = income_cat, fill = voter_category)) +
+  geom_bar(position = "fill", show.legend = FALSE) +  # Add show.legend parameter to show legend
+  labs(title = "Income",
+       y = "",
+       x = "") +
+  scale_fill_manual(values = c("#ffbc00", "#e082ad", "#ae4dff"),
+                    name = "Voter Category") +  # Add legend title
+  scale_x_continuous(labels = function(x) sprintf("%.0f", x * 100), position = "top") +
   theme_minimal() +
-  theme(legend.position = "", axis.title.y = element_blank(), axis.title.x = element_blank()) +
-  coord_flip() +
-  ggtitle("Education") +
-  theme(plot.title = element_text(hjust = 0.5))
+  fixed_aspect_ratio +
+  centered_title_theme  # Apply centered title theme
 
-# Plot party id by voter category
-plot_party <- ggplot(nonvoters, aes(x = Q30, fill = voter_category)) +
-  geom_bar(position = "fill") +
-  labs(x = "Party ID", y = "Percentage", fill = "") +
-  scale_fill_manual(values = custom_colors) +
+plot_age <- ggplot(nonvoters, aes(y = Age, fill = voter_category)) +
+  geom_bar(position = "fill", show.legend = FALSE) +
+  labs(title = "Age",
+       y = "",
+       x = "") +
+  scale_fill_manual(values = c("#ffbc00", "#e082ad", "#ae4dff"),
+                    name = "Voter Category") +
+  scale_x_continuous(labels = function(x) sprintf("%.0f", x * 100), position = "top") +
   theme_minimal() +
- theme(legend.position = "bottom", axis.title.y = element_blank(), axis.title.x = element_blank()) +
-  coord_flip() +
-  ggtitle("Party ID") +
-  theme(plot.title = element_text(hjust = 0.5))
+  fixed_aspect_ratio +
+  centered_title_theme  # Apply centered title theme
+
+plot_educ <- ggplot(nonvoters, aes(y = educ, fill = voter_category)) +
+  geom_bar(position = "fill", show.legend = FALSE) +
+  labs(title = "Education",
+       y = "",
+       x = "") +
+  scale_fill_manual(values = c("#ffbc00", "#e082ad", "#ae4dff"),
+                    name = "Voter Category") +
+  scale_x_continuous(labels = function(x) sprintf("%.0f", x * 100), position = "top") +
+  theme_minimal() +
+  fixed_aspect_ratio +
+  centered_title_theme  # Apply centered title theme
+
+plot_party <- ggplot(nonvoters, aes(y = Q30, fill = voter_category)) +
+  geom_bar(position = "fill", show.legend = FALSE) +
+  labs(title = "Party ID",
+       y = "",
+       x = "") +
+  scale_fill_manual(values = c("#ffbc00", "#e082ad", "#ae4dff"),
+                    name = "Voter Category") +
+  scale_x_continuous(labels = function(x) sprintf("%.0f", x * 100), position = "top") +
+  theme_minimal() +
+  fixed_aspect_ratio +
+  centered_title_theme  # Apply centered title theme
 
 # Arrange plots in a grid
 ggpubr::ggarrange(plot_race,
           plot_income ,
           plot_age ,
-          plot_education ,
+          plot_educ ,
           plot_party )
 
 
