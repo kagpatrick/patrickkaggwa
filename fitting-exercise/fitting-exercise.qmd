@@ -15,15 +15,14 @@ editor:
 ```{r}
 library(nlmixr2data)
 library(readxl) #for loading Excel files
-library(dplyr) #for data processing/cleaning
 library(tidyr) #for data processing/cleaning
 library(skimr) #for nice visualization of data 
-library(here) #to set paths
+suppressPackageStartupMessages(library(here))
 library(readr)
 library(ggplot2)
-library(dplyr)
+suppressPackageStartupMessages(library(dplyr))
 library(tidyr)
-library(corrplot)
+suppressPackageStartupMessages(library(corrplot))
 ```
 
 # Data loading
@@ -36,9 +35,6 @@ data_location <- here::here("fitting-exercise", "Mavoglurant_A2121_nmpk.csv")
 
 # Reading the CSV file into a data frame
 rawdata <- readr::read_csv(data_location)
-
-# View the structure of the data
-str(rawdata)
 
 # View the first few rows of the data
 head(rawdata)
@@ -121,21 +117,13 @@ As part of the exploratory process above.
 Do a few more here, once the data is clean.
 We shall make some useful summary tables.
 We shall show some scatter plot, box plot, histogram and pair/correlation plot between the main outcome of interest (total drug, Y) and other predictors.
-Plot the distributions of your variables to make sure they all make sense.
 
 ## Visualization
 
 ```{r}
-# Summary table
-summary_table <- final_data %>%
-  group_by(RACE, SEX) %>%
-  summarize(
-    Mean_Y = mean(Y),
-    Median_Y = median(Y),
-    Min_Y = min(Y),
-    Max_Y = max(Y)
-  )
-print(summary_table)
+#Summary table for all variables
+summary_data <- summary(final_data[, c("Y", "DOSE", "AGE", "SEX", "RACE", "WT", "HT")])
+print(summary_data)
 ```
 
 ```{r}
@@ -149,10 +137,32 @@ According to the scatter I don't see any meaningful pattern.
 
 ```{r}
 # Boxplot between Y and DOSE
-ggplot(final_data, aes(x = as.factor(DOSE), y = Y)) +
+ggplot(final_data, aes(x = as.factor(DOSE), y = Y, fill = factor(DOSE))) +
   geom_boxplot() +
   labs(x = "Dose", y = "Total Drug (Y)", title = "Boxplot: Total Drug vs Dose")
 
+```
+
+```{r}
+ggplot(final_data, aes(x = as.factor(SEX), y = Y, fill = factor(SEX))) +
+  geom_boxplot() +
+  labs(x = "SEX", y = "Total Drug (Y)", title = "Boxplot: Total Drug vs SEX")
+
+
+```
+
+```{r}
+# Boxplot between Y and RACE
+ggplot(final_data, aes(x = as.factor(RACE), y = Y, fill = factor(RACE))) +
+  geom_boxplot() +
+  labs(x = "RACE", y = "Total Drug (Y)", title = "Boxplot: Total Drug vs RACE")
+
+```
+
+```{r}
+ggplot(final_data, aes(x = AGE)) +
+  geom_histogram(bins = 20, fill = "blue", color = "black") +
+  labs(x = "AGE", y = "Frequency", title = "Distribution of AGE")
 ```
 
 ```{r}
