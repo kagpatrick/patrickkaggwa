@@ -13,21 +13,27 @@ editor:
 # Loading needed packages.
 
 ```{r}
-library(nlmixr2data)
-library(readxl) #for loading Excel files
-library(tidyr) #for data processing/cleaning
-library(skimr) #for nice visualization of data 
+suppressPackageStartupMessages(library(nlmixr2data))
+suppressPackageStartupMessages(library(readxl)) #for loading Excel files
+suppressPackageStartupMessages(library(tidyr)) #for data processing/cleaning
+suppressPackageStartupMessages(library(skimr)) #for nice visualization of data 
 suppressPackageStartupMessages(library(here))
-library(readr)
-library(ggplot2)
+suppressPackageStartupMessages(library(readr))
+suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(dplyr))
-library(tidyr)
+suppressPackageStartupMessages(library(tidyr))
+suppressPackageStartupMessages(library(tidymodels))
 suppressPackageStartupMessages(library(corrplot))
+suppressPackageStartupMessages(library(recipes))
+suppressPackageStartupMessages(library(yardstick))
+suppressPackageStartupMessages(library(caret))
 ```
 
 # Data loading
 
 ```{r}
+
+
 # path to data
 # note the use of the here() package and not absolute paths
 # Defining the location of the CSV file
@@ -47,14 +53,11 @@ Stratify by dose
 
 ```{r}
 # Plot DV as a function of time, stratified by dose and using ID as a grouping factor
-ggplot(rawdata, aes(x = TIME, y = DV, color = as.factor(DOSE), group = ID)) +
-  geom_line() +
-  labs(x = "Time", y = "Dependent Variable, Mavoglurant", color = "Dose") +
-  facet_wrap(~ DOSE, scales = "free", ncol = 1) +
-  ggtitle("Outcome Variable vs. Time Stratified by Dose") +
-  theme_minimal()
+p1 <- rawdata %>% ggplot() +
+  geom_line( aes( x = TIME, y = DV, group = as.factor(ID), color = as.factor(DOSE)) ) +
+  facet_wrap( ~ DOSE, scales = "free_y")
+plot(p1)
 ```
-
 > After formatting of the dataset, it still looks a bit strange.
 > One thing you we notice is that there are some individuals that seem to have received the drug more than once, indicated by having both entries with OCC=1 and OCC=2.
 > Since we are not sure what the difference is, we only keep one dataset for each individual.
@@ -83,16 +86,16 @@ data_subset <- dplyr::filter(rawdata, TIME != 0)
 # Step 2: Compute the sum of the DV variable for each individual
 Y <- data_subset %>%
   group_by(ID) %>%
-  summarize(Y = sum(DV))
+  dplyr::summarize(Y = sum(DV))
+ 
 
 # Step 3: Create a data frame containing only the observations where TIME == 0
 data_time_0 <- dplyr::filter(rawdata, TIME == 0)
 
-# Step 4: Combine the two data frames using inner_join
-final_data <- dplyr::inner_join(Y, data_time_0, by = "ID")
+# Step 4: Combine the two data frames using left join
+# merge data  
+final_data1 <- left_join(Y, data_time_0, by = "ID")
 
-# View the final data frame
-head(final_data)
 ```
 
 Finally, we'll do a bit more cleaning.
@@ -101,16 +104,14 @@ We also want to convert RACE and SEX to factor variables.And we shall only these
 
 ```{r}
 # Convert RACE and SEX to factor variables
-final_data$RACE <- as.factor(final_data$RACE)
-final_data$SEX <- as.factor(final_data$SEX)
+final_data1$RACE <- as.factor(final_data1$RACE)
+final_data1$SEX <- as.factor(final_data1$SEX)
 
 # Select only the necessary variables
-final_data <- final_data %>%
+fdata <- final_data1 %>%
   select(Y, DOSE, AGE, SEX, RACE, WT, HT)
 
-# View the cleaned-up data frame
-head(final_data)
-
+readr::write_rds(fdata,"clean_data.rds")
 ```
 
 As part of the exploratory process above.
@@ -122,13 +123,13 @@ We shall show some scatter plot, box plot, histogram and pair/correlation plot b
 
 ```{r}
 #Summary table for all variables
-summary_data <- summary(final_data[, c("Y", "DOSE", "AGE", "SEX", "RACE", "WT", "HT")])
-print(summary_data)
+summary_data <- summary(fdata[, c("Y", "DOSE", "AGE", "SEX", "RACE", "WT", "HT")])
+
 ```
 
 ```{r}
 # Scatterplot between outcome(Y) and AGE
-ggplot(final_data, aes(x = AGE, y = Y)) +
+ggplot(fdata, aes(x = AGE, y = Y)) +
   geom_point() +
   labs(x = "Age", y = "Total Drug (Y)", title = "Scatterplot: Total Drug vs Age")
 ```
@@ -137,14 +138,14 @@ According to the scatter I don't see any meaningful pattern.
 
 ```{r}
 # Boxplot between Y and DOSE
-ggplot(final_data, aes(x = as.factor(DOSE), y = Y, fill = factor(DOSE))) +
+ggplot(fdata, aes(x = as.factor(DOSE), y = Y, fill = factor(DOSE))) +
   geom_boxplot() +
   labs(x = "Dose", y = "Total Drug (Y)", title = "Boxplot: Total Drug vs Dose")
 
 ```
 
 ```{r}
-ggplot(final_data, aes(x = as.factor(SEX), y = Y, fill = factor(SEX))) +
+ggplot(fdata, aes(x = as.factor(SEX), y = Y, fill = factor(SEX))) +
   geom_boxplot() +
   labs(x = "SEX", y = "Total Drug (Y)", title = "Boxplot: Total Drug vs SEX")
 
@@ -153,31 +154,29 @@ ggplot(final_data, aes(x = as.factor(SEX), y = Y, fill = factor(SEX))) +
 
 ```{r}
 # Boxplot between Y and RACE
-ggplot(final_data, aes(x = as.factor(RACE), y = Y, fill = factor(RACE))) +
+ggplot(fdata, aes(x = as.factor(RACE), y = Y, fill = factor(RACE))) +
   geom_boxplot() +
   labs(x = "RACE", y = "Total Drug (Y)", title = "Boxplot: Total Drug vs RACE")
 
 ```
 
 ```{r}
-ggplot(final_data, aes(x = AGE)) +
+ggplot(fdata, aes(x = AGE)) +
   geom_histogram(bins = 20, fill = "blue", color = "black") +
   labs(x = "AGE", y = "Frequency", title = "Distribution of AGE")
 ```
 
 ```{r}
-ggplot(final_data, aes(x = Y)) +
+ggplot(fdata, aes(x = Y)) +
   geom_histogram(bins = 20, fill = "blue", color = "black") +
   labs(x = "Total drug", y = "Frequency", title = "Distribution of Total drug")
 ```
-
-Looking at the bar graph, the total drug looks a little skewed to the left.
 
 Now we shall do a correlation plot to visually inspect the relationships between variables and identify patterns or correlations.
 
 ```{r}
 # Pair/correlation plot
-correlation_matrix <- cor(final_data[, c("Y", "DOSE", "AGE", "WT", "HT")])
+correlation_matrix <- cor(fdata[, c("DOSE", "AGE", "WT", "HT")])
 corrplot(correlation_matrix, method = "circle")
 ```
 
@@ -187,193 +186,332 @@ According to the plot there is a high correlation between Total drug(Y) and Dose
 
 1.  We shall fit a linear model to the continuous outcome (Y) using the main predictor of interest, which we'll assume here to be DOSE and 2. Fit a linear model to the continuous outcome (Y) using all predictors. For both models, compute RMSE and R-squared and print them out.
 
-```{r}
-# Load necessary packages
-#install.packages("tidymodels")
-library(tidymodels)
-```
 
 ```{r}
 # Fit a linear model using the main predictor of interest (DOSE)
-linear_model_dose <- lm(Y ~ DOSE, data = final_data)
-linear_model_dose
+
+lin_mod <- linear_reg() %>% set_engine("lm")
+linear_model <- lin_mod %>% fit(Y ~ DOSE, data = fdata)
+
 ```
 
 ```{r}
 # Fit a linear model using all predictors
-linear_model_all <- lm(Y ~ DOSE + AGE + SEX + RACE, data = final_data)
-linear_model_all
+linear_model_all <- lin_mod %>% fit(Y ~ ., data = fdata)
 ```
 
 ```{r}
-# Function to compute RMSE
-compute_rmse <- function(model, actual_values) {
-  predicted_values <- predict(model)
-  rmse <- sqrt(mean((predicted_values - actual_values)^2))
-  return(rmse)
-}
 
+# Compute the RMSE and R squared for model 1
+metrics_1 <- linear_model %>% 
+  predict(fdata) %>% 
+  bind_cols(fdata) %>% 
+  metrics(truth = Y, estimate = .pred)
 ```
 
 ```{r}
-# Function to compute R-squared
-compute_r_squared <- function(model, actual_values) {
-  predicted_values <- predict(model)
-  r_squared <- summary(model)$r.squared
-  return(r_squared)
-}
-
+# Compute the RMSE and R squared for model 2
+metrics_2 <- linear_model_all %>% 
+  predict(fdata) %>% 
+  bind_cols(fdata) %>% 
+  metrics(truth = Y, estimate = .pred)
 ```
 
 ```{r}
-# Computing RMSE and R-squared for the model with main predictor (DOSE)
-rmse_dose <- compute_rmse(linear_model_dose, final_data$Y)
-r_squared_dose <- compute_r_squared(linear_model_dose, final_data$Y)
-
-```
-
-```{r}
-# Compute RMSE and R-squared for the model with all predictors
-rmse_all <- compute_rmse(linear_model_all, final_data$Y)
-r_squared_all <- compute_r_squared(linear_model_all, final_data$Y)
-```
-
-```{r}
-# Print RMSE and R-squared for both models
-cat("Linear model with main predictor (DOSE):\n")
-cat("RMSE:", rmse_dose, "\n")
-cat("R-squared:", r_squared_dose, "\n\n")
-cat("Linear model with all predictors:\n")
-cat("RMSE:", rmse_all, "\n")
-cat("R-squared:", r_squared_all, "\n")
-
+# Print the results
+print(metrics_1)
+print(metrics_2)
 ```
 
 ### Linear model with main predictor (DOSE):
 
-RMSE: 666.4618 R-squared: 0.5156446 The linear model with DOSE as the main predictor yielded an RMSE of 666.4618, indicating that, on average, the model's predictions deviated by approximately 666.4618 units from the actual values.
-The R-squared value of 0.5156446 suggests that DOSE explains approximately 51.56% of the variance in the outcome variable (Y).
-This indicates a moderate level of explanatory power for DOSE alone in predicting the outcome variable.
+The linear model with DOSE as the main predictor yielded an RMSE of 666.4618, indicating that on average, the model's predictions deviated from the actual values by about 666 units.
+The R-squared value of 0.5156 suggests a moderate level of explanatory power for DOSE alone (though R-squared doesn't directly translate to a percentage of variance explained).
 
 ### Linear model with all predictors:
 
-RMSE: 656.1714 R-squared: 0.5304863 The linear model with all predictors resulted in a slightly lower RMSE of 656.1714 compared to the model with DOSE alone.
-This suggests that including additional predictors slightly improved the model's predictive accuracy.
-The R-squared value of 0.5304863 indicates that the model with all predictors explains approximately 53.05% of the variance in the outcome variable (Y), representing a slight improvement in explanatory power compared to the model with DOSE alone.
+The model with all predictors resulted in a lower RMSE of 590.8534, a reduction of 11.3% compared to the model with DOSE alone.
+This suggests that including additional predictors improved the model's predictive accuracy.
+The R-squared value increased to 0.6193, indicating the model explains a larger portion of the variance in the outcome variable compared to the single-predictor model.
 
-#### Comments and thoughts:
+### Comments and Thoughts:
 
-While both models show some level of predictive ability, there is room for improvement in terms of predictive accuracy and explanatory power.
-Further refinement of the models and consideration of additional predictors or model specifications may be necessary to develop more accurate and reliable predictive models.
+While both models show some predictive ability, there's room for improvement.
+Including all predictors led to a noticeable decrease in RMSE.
+Further exploration is recommended to develop a more accurate and reliable model.
+This could involve exploring:
+
+### Interaction terms:
+
+Are there interactions between predictors that could influence the outcome?
+
+### Feature engineering:
+
+Can we create new features from existing data to capture more complex relationships?
+
+### Model selection techniques:
+
+Identifying the most important predictors using techniques like LASSO regression could improve interpretability and potentially performance.
+By exploring these avenues, we can potentially develop a more robust linear model for predicting the outcome variable.
 
 Now we shall SEX as the outcome of interest (that doesn't make too much scientific sense, but we want to practice fitting both continuous and categorical outcomes).
 
 ```{r}
-# Fit a logistic model using the main predictor of interest (DOSE)
-logistic_model_dose <- glm(SEX ~ DOSE, data = final_data, family = binomial)
+## ---- fit-data-logistic --------
+# fit the logistic models with SEX as outcome 
+# first model has only DOSE as predictor
+# second model has all variables as predictors
+log_mod <- logistic_reg() %>% set_engine("glm")
+logmod1 <- log_mod %>% fit(SEX ~ DOSE, data = fdata)
+logmod2 <- log_mod %>% fit(SEX ~ ., data = fdata)
+```
+
+```{r}
+# Compute the accuracy and AUC for model 1
+logmod1_acc <- logmod1 %>% 
+  predict(fdata) %>% 
+  bind_cols(fdata) %>% 
+  metrics(truth = SEX, estimate = .pred_class) %>% 
+  filter(.metric == "accuracy") 
+
+
+logmod1_auc <-  logmod1 %>%
+  predict(fdata, type = "prob") %>%
+  bind_cols(fdata) %>%
+  roc_auc(truth = SEX, .pred_1)
+```
+
+```{r}
+# Compute the accuracy and AUC for model 2
+logmod2_acc <- logmod2 %>% 
+  predict(fdata) %>% 
+  bind_cols(fdata) %>% 
+  metrics(truth = SEX, estimate = .pred_class) %>% 
+  filter(.metric %in% c("accuracy"))
+
+
+logmod2_auc <-  logmod2 %>%
+  predict(fdata, type = "prob") %>%
+  bind_cols(fdata) %>%
+  roc_auc(truth = SEX, .pred_1)
+```
+
+```{r}
+# Print the results
+print(logmod1_acc)
+print(logmod2_acc)
+print(logmod1_auc)
+print(logmod2_auc)
+```
+
+### Logistic models were used to predict SEX based on various factors.
+
+The model with DOSE as the sole predictor performed well, with an accuracy of 86.7% and a ROC-AUC score of 0.5919 (suggesting only slightly better than random chance at distinguishing between the two SEX classes).
+
+In contrast, the model that included all predictors achieved a significantly higher accuracy of 94.17 (7.5% improvement) and a much stronger ROC-AUC score of 97.96.
+This score indicates excellent discriminative power, meaning the model can effectively rank positive instances (correctly predicted SEX) higher than negative ones (incorrectly predicted SEX).
+
+### Comments and Thoughts
+
+Including all available predictors significantly improved the model's ability to predict SEX.
+However, further exploration is recommended to develop an even more accurate and reliable model.
+This could involve:
+
+### Feature Engineering:
+
+Creating new features based on existing data to potentially capture more complex relationships.
+
+### Variable Selection:
+
+Identifying the most important predictors using statistical techniques to potentially improve model interpretability and performance.
+
+### Exploring alternative models:
+
+Investigating other classification algorithms besides logistic regression to see if they might yield even better results.
+By exploring these avenues, we can potentially develop a more robust model for predicting SEX.
+
+##############################################################################
+
+```{r}
+rngseed = 1234
+set.seed(rngseed)
+#spliting data into 75% train and 25% test set
+data_split <- initial_split(fdata, prop = 0.75) 
+data_train <- training(data_split)
+data_test <- testing(data_split)
+```
+
+# Fit a linear model using the main predictor of interest (DOSE)
+```{r}
+rngseed = 1234
+set.seed(rngseed)
+logmod <- linear_reg() %>% set_engine("lm")
+rmod1 <- logmod %>% fit(Y ~ DOSE, data = data_train)# fitting the model
 
 ```
 
 ```{r}
-# Fit a logistic model using all predictors
-logistic_model_all <- glm(SEX ~ ., data = final_data, family = binomial)
-
+rngseed = 1234
+set.seed(rngseed)
+# Fit a linear model using all predictors
+rmod2 <- logmod %>% fit(Y ~ ., data = data_train)# fitting the model
 ```
 
 ```{r}
-# Function to compute accuracy
-compute_accuracy <- function(model, actual_values) {
-  predicted_values <- ifelse(predict(model, type = "response") >= 0.5, 1, 0)
-  accuracy <- mean(predicted_values == actual_values)
-  return(accuracy)
-}
+rngseed = 1234
+set.seed(rngseed)
+# Compute the RMSE for model 1
+RMSE_rmod1 <- linear_model %>% 
+  predict(data_train) %>% 
+  bind_cols(data_train) %>% 
+  metrics(truth = Y, estimate = .pred)
 ```
 
 ```{r}
-# Function to compute ROC-AUC
-compute_roc_auc <- function(model, actual_values) {
-  library(pROC)
-  predicted_values <- predict(model, type = "response")
-  roc_auc <- auc(roc(actual_values, predicted_values))
-  return(roc_auc)
-}
+rngseed = 1234
+set.seed(rngseed)
+# Compute the RMSE  model 2
+RMSE_rmod2 <- linear_model_all %>% 
+  predict(data_train) %>% 
+  bind_cols(data_train) %>% 
+  metrics(truth = Y, estimate = .pred)
 ```
 
 ```{r}
-# Computing the accuracy and ROC-AUC for the model with main predictor (DOSE)
-accuracy_dose <- compute_accuracy(logistic_model_dose, final_data$SEX)
-roc_auc_dose <- compute_roc_auc(logistic_model_dose, final_data$SEX)
+rngseed = 1234
+set.seed(rngseed)
+# Print the results
+print(RMSE_rmod1)
+print(RMSE_rmod2)
+```
+
+#Now look at the model performance assessment 1
+Looking at the Null model
+
+```{r}
+rngseed = 1234
+set.seed(rngseed)
+nullmod <- null_model() %>% 
+  set_engine("parsnip") %>% 
+  set_mode("regression")
+# Fit the null model on train set 
+rnull <- nullmod %>% fit(Y ~ 1, data = data_train)# fitting the model
 ```
 
 ```{r}
-# Compute accuracy and ROC-AUC for the model with all predictors
-accuracy_all <- compute_accuracy(logistic_model_all, final_data$SEX)
-roc_auc_all <- compute_roc_auc(logistic_model_all, final_data$SEX)
-
+rngseed = 1234
+set.seed(rngseed)
+# Compute the RMSE for model 1
+RMSE_null <- rnull %>% 
+  predict(data_train) %>% 
+  bind_cols(data_train) %>% 
+  metrics(truth = Y, estimate = .pred)
 ```
+
+##Print RMSE for the null model, Model 1, and Model 2
+```{r}
+rngseed = 1234
+set.seed(rngseed)
+print(RMSE_null)
+print(RMSE_rmod1)
+print(RMSE_rmod2)
+```
+Model 2 has a lower RMSE (622.62) compared to Model 1 (706.01) and the null (948.4), indicating that Model 2 performs better in terms of overall prediction accuracy.
+
+Now we will do a 10-fold cross-validation on the train data.  Then let's compute the RMSE values for Model 1 and Model2 using 10-fold cross-validation.
+
 
 ```{r}
-# Print accuracy and ROC-AUC for both models
-cat("Logistic model with main predictor (DOSE):\n")
-cat("Accuracy:", accuracy_dose, "\n")
-cat("ROC-AUC:", roc_auc_dose, "\n\n")
+#Set a seed
+rngseed = 1234
+set.seed(rngseed)
 
-cat("Logistic model with all predictors:\n")
-cat("Accuracy:", accuracy_all, "\n")
-cat("ROC-AUC:", roc_auc_all, "\n")
+#Define cross-validation with k = 10 folds
+folds <- vfold_cv(data_train, v = 10)
+
+#setting model specification 
+model_spec <- linear_reg() %>% 
+              set_engine("lm")
+
+#Using a workflow on DOSE
+wf1 <- workflow() %>%
+  add_model(model_spec)%>%
+  add_formula(Y ~ DOSE)
+  
+# Workflow for all predictors
+wfall <- workflow() %>%
+  add_model(model_spec)%>%
+  add_formula(Y ~ .,)
+
+#Fitting the models with resampling 
+fitdoze <- fit_resamples(wf1, resamples = folds)
+fitall <- fit_resamples(wfall, resamples = folds)
+
+#Getting metrics for both models 
+collect_metrics(fitdoze)
+collect_metrics(fitall)
+
+
 ```
 
-### Interpreting the results
+#Changes:
 
-Logistic model with main predictor (DOSE):
+For Model 1, the RMSE obtained through CV (619.0259696) is lower than the earlier estimate (706.0131078). This suggests that the model's performance improved when evaluated using cross-validation.
+For Model 2, the RMSE obtained through CV (623.491370) is slightly higher than the earlier estimate (622.6187389). This indicates a minor degradation in performance when evaluated using cross-validation.
 
-Accuracy: 0 ROC-AUC: 0.5919 The logistic model with DOSE as the main predictor yielded an accuracy of 0, indicating that the model did not correctly classify any observations.
-The ROC-AUC score of 0.5919 suggests that the model's ability to discriminate between the two classes of (SEX) is slightly better than random chance, but it is still relatively low.
+#Didn’t Change:
 
-Logistic model with all predictors:
+The ranking between Model 1 and Model 2 remains the same. Model 1 still performs better than Model 2 in terms of RMSE, regardless of whether it's evaluated through CV or using earlier estimates.
 
-Accuracy: 0.025 ROC-AUC: 0.9796 The logistic model with all predictors resulted in a slightly improved accuracy of 0.025, indicating that the model correctly classified approximately 2.5% of the observations.
-The ROC-AUC score of 0.9796 suggests that this model has excellent discriminative power, with a high probability of correctly ranking a randomly chosen positive instance higher than a randomly chosen negative one.
 
-#### Comments and thoughts:
+Finally, let's re-create the cross-validation folds and re-fit the linear models using a different value for the random seed.
 
-While the logistic model with all predictors shows promise in predicting SEX, further refinement and exploration of the data are necessary to develop a more accurate and reliable model.
-Additionally, careful consideration of the underlying relationships between predictors and the outcome variable is crucial for interpreting and improving model performance.
 
 ```{r}
-#install.packages("kknn")
-library(kknn)
-# Fit a KNN model to the continuous outcome (Y)
-knn_model_continuous <- nearest_neighbor(weight_func = "rectangular", neighbors = tune()) %>%
-  set_engine("kknn") %>%
-  set_mode("regression") %>%
-  fit(Y ~ ., data = final_data)
+#Set a seed
+rngseed = 5002
+set.seed(rngseed)
+
+#Define cross-validation with k = 10 folds
+folds <- vfold_cv(data_train, v = 10)
+
+#setting model specification 
+model_specf <- linear_reg() %>% set_engine("lm")
+
+#Using a workflow on DOSE
+wf3 <- workflow() %>%
+  add_model(model_specf)%>%
+  add_formula(Y ~ DOSE)
+  
+# Workflow for all predictors
+wfall4 <- workflow() %>%
+  add_model(model_specf)%>%
+  add_formula(Y ~ .,)
+
+#Fitting the models with resampling 
+fitdoze1 <- fit_resamples(wf3, resamples = folds)
+fitall2 <- fit_resamples(wfall4, resamples = folds)
+
+#Getting metrics for both models 
+collect_metrics(fitdoze1)
+collect_metrics(fitall2)
 ```
+#Previous RMSE Estimates:
 
-```{r}
-# Fit a KNN model to the categorical outcome (SEX)
-knn_model_categorical <- nearest_neighbor(weight_func = "rectangular", neighbors = tune()) %>%
-  set_engine("kknn") %>%
-  set_mode("classification") %>%
-  fit(SEX ~ ., data = final_data)
-```
+Model 1: RMSE = 619.0259696
+Model 2: RMSE = 623.491370
 
-```{r}
-# Print the models
-knn_model_continuous
-knn_model_categorical
-```
+New RMSE Estimates with New Seed:
+Model 1: RMSE = 616.3816601
+Model 2: RMSE = 606.9840216
 
-### KNN Model for Continuous Outcome (Y):
+#Changes:
 
-**Interpretation**
+For both Model 1 and Model 2, the RMSE obtained with the new seed is lower than the previous estimates. This suggests that with the new seed, both models perform better in terms of prediction accuracy.
 
-Type of response variable: Continuous Minimal mean absolute error: 777.3232 Minimal mean squared error: 910968.3 Best kernel: Rectangular Best k: 115 Interpretation: For the model predicting the continuous outcome (Y), the minimal mean absolute error (MAE) is 777.3232, indicating the average absolute difference between the predicted and actual values.
-The minimal mean squared error (MSE) is 910968.3, representing the average squared difference between the predicted and actual values.
-The best kernel for this model is rectangular, and the optimal value of k is 115.
+#What Didn't Change:
 
-### KNN Model for Categorical Outcome (SEX):
+The relative performance between Model 1 and Model 2 remains the same. Model 2 still performs better than  Model 1 in terms of RMSE, with the new seed.
 
-Type of response variable: Nominal Minimal misclassification: 0.1333333 Best kernel: Rectangular Best k: 115 Interpretation: For the model predicting the categorical outcome (SEX), the minimal misclassification rate is 0.1333333, indicating the proportion of incorrectly classified instances.
-The best kernel for this model is rectangular, and the optimal value of k is 115.
-A misclassification rate of 0.1333333 suggests that approximately 13.33% of the instances are misclassified by the model.
+
+
