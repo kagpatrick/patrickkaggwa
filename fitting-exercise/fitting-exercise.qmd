@@ -515,3 +515,164 @@ The relative performance between Model 1 and Model 2 remains the same. Model 2 s
 
 
 
+# This section added by Chaohua Li
+  (Module 10. Model Improvement - Part 2)
+  
+
+# Model predictions
+
+1.Prepare datasets and the three original models for predictions. 
+```{r}
+#Drop variable RACE as indicated in the instruction
+data_train <- subset(data_train, select = -RACE)
+data_test <- subset(data_test, select = -RACE)
+
+#Rerun the original model with DOSE as the only predictor
+logmod <- linear_reg() %>% set_engine("lm")
+rmod1 <- logmod %>% fit(Y ~ DOSE, data = data_train)# fitting the model
+
+#Rerun the original model with all variables as predictors
+rmod2 <- logmod %>% fit(Y ~ ., data = data_train)# fitting the model
+
+#Rerun the null model
+nullmod <- null_model() %>% 
+  set_engine("parsnip") %>% 
+  set_mode("regression")
+rnull <- nullmod %>% fit(Y ~ 1, data = data_train)# fitting the model
+```
+
+2.Put the observed values and the predicted values from your 3 original model fits to 
+all of the training data into a data frame, add labels for variables. 
+```{r}
+pred_rmod1 <- predict(rmod1, new_data = data_train)$.pred
+pred_rmod2 <- predict(rmod2, new_data = data_train)$.pred
+pred_rnull <- predict(rnull, new_data = data_train)$.pred
+
+mod1 <- data.frame(
+  Observed_Values  = data_train$Y,
+  Predicted  = pred_rmod1,
+  label="Predictions from Model 1 (DOSE only)")
+
+mod2 <- data.frame(
+  Observed_Values  = data_train$Y,
+  Predicted  = pred_rmod2,
+  label="Predictions from Model 2 (All Variables)")
+
+mod3 <- data.frame(
+  Observed_Values  = data_train$Y,
+  Predicted  = pred_rnull,
+  label="Predictions from Null Model")
+
+graph_df<-rbind(mod1,mod2,mod3)
+
+```
+
+3.Create a scatterplot with predicted values on Y-axis and observed values on X-axis,
+stratified by models. 
+```{r}
+ggplot(graph_df, aes(x = Observed_Values, y = Predicted, color = label)) +
+  geom_point() +  
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "grey") +  
+  labs(x = "Observed Values", y = "Predicted Values", title = "Observed vs. Predicted Values by Models", color = "Model") +
+  theme_minimal() + # Use a minimal theme for aesthetics
+  scale_shape_manual(values = c(16, 17, 18)) + # Set different shapes for each level of the label variable
+  scale_color_manual(values = c("blue", "green", "red"))
+
+```
+Predicted values from the null model forms a straight horizontal line, because the null model merely outputs the mean value for each observation. For model 1 that only includes dose, the predicited values form 3 horizontal lines, because DOSE has only three values. Model 2 with all predictors looks the best, predicted values generally scatter around the diagonal line. 
+
+4.Plot predicted versus residuals for model 2 that has all predictors. 
+```{r}
+#calcualte residuals
+graph_df$residual<-graph_df$Predicted-graph_df$Observed_Values
+
+#plot the predicted versus residuals for model 2
+ggplot(graph_df, aes(x = Predicted, y = residual)) +
+  geom_point() +  
+  geom_abline(slope = 0, intercept = 0, linetype = "dashed", color = "green") +  
+  labs(x = "Predicted Values", y = " Residuals", title = "Predicted Values vs. Residuals") +
+  scale_y_continuous(limits = c(-3100, 3100))
+```
+There are slightly more negative residuals than positive residuals. 
+
+
+# Model predictions and uncertainty
+
+1.Create 100 bootstraps of the train set. 
+```{r}
+#reset seed
+rngseed = 1234
+set.seed(rngseed)
+
+#create 100 bootstraps of the train set
+library(rsample)
+bootstrap_samples <- bootstraps(data_train, times = 100)
+```
+
+
+2.Write a loop to fit the model to each of the bootstrap samples and make predictions 
+from this model for the original training data. Save all predictions in a list.
+```{r}
+#create an emplty list 
+boot_list <- list()
+
+#use a loop to fit model to bootstrap samples then save predicted values in the list
+for(i in 1:100) {
+  single_boot = rsample::analysis(bootstrap_samples$splits[[i]]) #get the individual bootstrap sample
+
+  model2 <- logmod %>% fit(Y ~ ., data = single_boot) #fit model2 to each bootstrap sample 
+  
+  predicted_value <- predict(model2, new_data = data_train) #predicted values based on train set
+  
+  boot_list[[i]] <- predicted_value   # save predicted values in list
+}
+```
+
+
+3.Compute the mean and confidence intervals of predicted values, and create a dataframe
+for plotting.
+```{r}
+#convert list into matrix
+pred_matrix <- matrix(unlist(boot_list), nrow = length(boot_list), byrow = TRUE)
+
+#compute the median and 95% confidence intervals.
+preds <- pred_matrix |> apply(2, quantile,  c(0.025, 0.5, 0.975)) |>  t()
+
+#prepare dataframe for plotting
+
+graph_df2<-data_train
+graph_df2$L2.5<-preds[,1]
+graph_df2$median<-preds[,2]
+graph_df2$U97.5<-preds[,3]
+graph_df2$Predicted<-mod2$Predicted
+```
+
+4. Plot observed values on the x-axis, and original predictions on the training data, as well as median and the 95% confidence intervals on the y-axis.
+```{r}
+ggplot(graph_df2, aes(x = Y)) +
+  geom_point(aes(y = Predicted), color = "black") +  # Plot Predicted values
+  geom_point(aes(y = median), color = "green") +      # Plot median values
+  geom_errorbar(aes(ymin = L2.5, ymax = U97.5),      # Plot confidence intervals
+                width = 0.1, color = "red") +
+  scale_x_continuous(limits = c(0, max(graph_df2$Y))) +
+  scale_y_continuous(limits = c(0, max(graph_df2$U97.5)))+
+  labs(x = "Observed Values", y = "Predicted Values",  # Axis labels
+       title = "Observed vs. Predicted Values with Median and 95% Confidence Intervals") +
+  scale_color_manual(values = c("black"="Predicted values", "green"="Median", "red"="95% CI"))+
+  theme_minimal() +
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "grey")
+  
+```
+The data points are generally scattered around the diagonal line, indicating the model 
+make relatively accurate predictions. The median values and the predicted values are very close. 
+The 95% confidence intervals for the predictions are relatively narrow, indicating the uncertainty in the predictions are low. However, for high values of Y, the predictions get less accurate and the uncertainty also increases. This suggests there might be some pattern in the data not captured by the model. 
+
+
+
+
+
+
+
+
+
+
