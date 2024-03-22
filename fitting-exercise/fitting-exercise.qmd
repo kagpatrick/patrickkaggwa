@@ -587,7 +587,7 @@ Predicted values from the null model forms a straight horizontal line, because t
 graph_df$residual<-graph_df$Predicted-graph_df$Observed_Values
 
 #plot the predicted versus residuals for model 2
-ggplot(graph_df, aes(x = Predicted, y = residual)) +
+ggplot(graph_df[graph_df$label=="Predictions from Model 2 (All Variables)",], aes(x = Predicted, y = residual)) +
   geom_point() +  
   geom_abline(slope = 0, intercept = 0, linetype = "dashed", color = "green") +  
   labs(x = "Predicted Values", y = " Residuals", title = "Predicted Values vs. Residuals") +
