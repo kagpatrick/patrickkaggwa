@@ -58,6 +58,7 @@ p1 <- rawdata %>% ggplot() +
   facet_wrap( ~ DOSE, scales = "free_y")
 plot(p1)
 ```
+
 > After formatting of the dataset, it still looks a bit strange.
 > One thing you we notice is that there are some individuals that seem to have received the drug more than once, indicated by having both entries with OCC=1 and OCC=2.
 > Since we are not sure what the difference is, we only keep one dataset for each individual.
@@ -186,7 +187,6 @@ According to the plot there is a high correlation between Total drug(Y) and Dose
 
 1.  We shall fit a linear model to the continuous outcome (Y) using the main predictor of interest, which we'll assume here to be DOSE and 2. Fit a linear model to the continuous outcome (Y) using all predictors. For both models, compute RMSE and R-squared and print them out.
 
-
 ```{r}
 # Fit a linear model using the main predictor of interest (DOSE)
 
@@ -225,14 +225,14 @@ print(metrics_2)
 
 ### Linear model with main predictor (DOSE):
 
-The linear model with DOSE as the main predictor yielded an RMSE of 666.4618, indicating that on average, the model's predictions deviated from the actual values by about 666 units.
-The R-squared value of 0.5156 suggests a moderate level of explanatory power for DOSE alone (though R-squared doesn't directly translate to a percentage of variance explained).
+The linear model with DOSE as the main predictor yielded an RMSE of 666.5, indicating that on average, the model's predictions deviated from the actual values by about 600 units.
+The R-squared value of 0.52 suggests a moderate level of explanatory power for DOSE alone (though R-squared doesn't directly translate to a percentage of variance explained).
 
 ### Linear model with all predictors:
 
 The model with all predictors resulted in a lower RMSE of 590.8534, a reduction of 11.3% compared to the model with DOSE alone.
 This suggests that including additional predictors improved the model's predictive accuracy.
-The R-squared value increased to 0.6193, indicating the model explains a larger portion of the variance in the outcome variable compared to the single-predictor model.
+The R-squared value increased to 0.62, indicating the model explains a larger portion of the variance in the outcome variable compared to the single-predictor model.
 
 ### Comments and Thoughts:
 
@@ -254,7 +254,7 @@ Can we create new features from existing data to capture more complex relationsh
 Identifying the most important predictors using techniques like LASSO regression could improve interpretability and potentially performance.
 By exploring these avenues, we can potentially develop a more robust linear model for predicting the outcome variable.
 
-Now we shall SEX as the outcome of interest (that doesn't make too much scientific sense, but we want to practice fitting both continuous and categorical outcomes).
+Now we shall use SEX as the outcome of interest (that doesn't make too much scientific sense, but we want to practice fitting both continuous and categorical outcomes).
 
 ```{r}
 ## ---- fit-data-logistic --------
@@ -330,7 +330,7 @@ Identifying the most important predictors using statistical techniques to potent
 Investigating other classification algorithms besides logistic regression to see if they might yield even better results.
 By exploring these avenues, we can potentially develop a more robust model for predicting SEX.
 
-##############################################################################
+############################################################################## 
 
 ```{r}
 rngseed = 1234
@@ -342,6 +342,7 @@ data_test <- testing(data_split)
 ```
 
 # Fit a linear model using the main predictor of interest (DOSE)
+
 ```{r}
 rngseed = 1234
 set.seed(rngseed)
@@ -385,8 +386,7 @@ print(RMSE_rmod1)
 print(RMSE_rmod2)
 ```
 
-#Now look at the model performance assessment 1
-Looking at the Null model
+#Now look at the model performance assessment 1 Looking at the Null model
 
 ```{r}
 rngseed = 1234
@@ -409,6 +409,7 @@ RMSE_null <- rnull %>%
 ```
 
 ##Print RMSE for the null model, Model 1, and Model 2
+
 ```{r}
 rngseed = 1234
 set.seed(rngseed)
@@ -416,10 +417,11 @@ print(RMSE_null)
 print(RMSE_rmod1)
 print(RMSE_rmod2)
 ```
+
 Model 2 has a lower RMSE (622.62) compared to Model 1 (706.01) and the null (948.4), indicating that Model 2 performs better in terms of overall prediction accuracy.
 
-Now we will do a 10-fold cross-validation on the train data.  Then let's compute the RMSE values for Model 1 and Model2 using 10-fold cross-validation.
-
+Now we will do a 10-fold cross-validation on the train data.
+Then let's compute the RMSE values for Model 1 and Model2 using 10-fold cross-validation.
 
 ```{r}
 #Set a seed
@@ -456,16 +458,17 @@ collect_metrics(fitall)
 
 #Changes:
 
-For Model 1, the RMSE obtained through CV (619.0259696) is lower than the earlier estimate (706.0131078). This suggests that the model's performance improved when evaluated using cross-validation.
-For Model 2, the RMSE obtained through CV (623.491370) is slightly higher than the earlier estimate (622.6187389). This indicates a minor degradation in performance when evaluated using cross-validation.
+For Model 1, the RMSE obtained through CV (690.5397679) is lower than the earlier estimate (706.0131078).
+This suggests that the model's performance improved when evaluated using cross-validation.
+For Model 2, the RMSE obtained through CV (652.0510834) is slightly higher than the earlier estimate (622.6187389).
+This indicates a minor degradation in performance when evaluated using cross-validation.
 
-#Didn’t Change:
+#Didn't Change:
 
-The ranking between Model 1 and Model 2 remains the same. Model 1 still performs better than Model 2 in terms of RMSE, regardless of whether it's evaluated through CV or using earlier estimates.
-
+The ranking between Model 1 and Model 2 remains the same.
+Model 1 still performs better than Model 2 in terms of RMSE, regardless of whether it's evaluated through CV or using earlier estimates.
 
 Finally, let's re-create the cross-validation folds and re-fit the linear models using a different value for the random seed.
-
 
 ```{r}
 #Set a seed
@@ -494,34 +497,27 @@ fitall2 <- fit_resamples(wfall4, resamples = folds)
 
 #Getting metrics for both models 
 collect_metrics(fitdoze1)
-collect_metrics(fitall2)
+ collect_metrics(fitall2)
 ```
-#Previous RMSE Estimates:
-
-Model 1: RMSE = 619.0259696
-Model 2: RMSE = 623.491370
-
-New RMSE Estimates with New Seed:
-Model 1: RMSE = 616.3816601
-Model 2: RMSE = 606.9840216
 
 #Changes:
 
-For both Model 1 and Model 2, the RMSE obtained with the new seed is lower than the previous estimates. This suggests that with the new seed, both models perform better in terms of prediction accuracy.
+For both Model 1 and Model 2, the RMSE obtained with the new seed is lower than the previous estimates.
+This suggests that with the new seed, both models perform better in terms of prediction accuracy.
 
 #What Didn't Change:
 
-The relative performance between Model 1 and Model 2 remains the same. Model 2 still performs better than  Model 1 in terms of RMSE, with the new seed.
-
-
+The relative performance between Model 1 and Model 2 remains the same.
+Model 2 still performs better than Model 1 in terms of RMSE, with the new seed.
 
 # This section added by Chaohua Li
-  (Module 10. Model Improvement - Part 2)
-  
+
+(Module 10. Model Improvement - Part 2)
 
 # Model predictions
 
-1.Prepare datasets and the three original models for predictions. 
+1.Prepare datasets and the three original models for predictions.
+
 ```{r}
 #Drop variable RACE as indicated in the instruction
 data_train <- subset(data_train, select = -RACE)
@@ -541,8 +537,8 @@ nullmod <- null_model() %>%
 rnull <- nullmod %>% fit(Y ~ 1, data = data_train)# fitting the model
 ```
 
-2.Put the observed values and the predicted values from your 3 original model fits to 
-all of the training data into a data frame, add labels for variables. 
+2.Put the observed values and the predicted values from your 3 original model fits to all of the training data into a data frame, add labels for variables.
+
 ```{r}
 pred_rmod1 <- predict(rmod1, new_data = data_train)$.pred
 pred_rmod2 <- predict(rmod2, new_data = data_train)$.pred
@@ -567,8 +563,8 @@ graph_df<-rbind(mod1,mod2,mod3)
 
 ```
 
-3.Create a scatterplot with predicted values on Y-axis and observed values on X-axis,
-stratified by models. 
+3.Create a scatterplot with predicted values on Y-axis and observed values on X-axis, stratified by models.
+
 ```{r}
 ggplot(graph_df, aes(x = Observed_Values, y = Predicted, color = label)) +
   geom_point() +  
@@ -579,9 +575,13 @@ ggplot(graph_df, aes(x = Observed_Values, y = Predicted, color = label)) +
   scale_color_manual(values = c("blue", "green", "red"))
 
 ```
-Predicted values from the null model forms a straight horizontal line, because the null model merely outputs the mean value for each observation. For model 1 that only includes dose, the predicited values form 3 horizontal lines, because DOSE has only three values. Model 2 with all predictors looks the best, predicted values generally scatter around the diagonal line. 
 
-4.Plot predicted versus residuals for model 2 that has all predictors. 
+Predicted values from the null model forms a straight horizontal line, because the null model merely outputs the mean value for each observation.
+For model 1 that only includes dose, the predicited values form 3 horizontal lines, because DOSE has only three values.
+Model 2 with all predictors looks the best, predicted values generally scatter around the diagonal line.
+
+4.Plot predicted versus residuals for model 2 that has all predictors.
+
 ```{r}
 #calcualte residuals
 graph_df$residual<-graph_df$Predicted-graph_df$Observed_Values
@@ -593,12 +593,13 @@ ggplot(graph_df[graph_df$label=="Predictions from Model 2 (All Variables)",], ae
   labs(x = "Predicted Values", y = " Residuals", title = "Predicted Values vs. Residuals") +
   scale_y_continuous(limits = c(-3100, 3100))
 ```
-There are slightly more negative residuals than positive residuals. 
 
+There are slightly more negative residuals than positive residuals.
 
 # Model predictions and uncertainty
 
-1.Create 100 bootstraps of the train set. 
+1.Create 100 bootstraps of the train set.
+
 ```{r}
 #reset seed
 rngseed = 1234
@@ -609,9 +610,9 @@ library(rsample)
 bootstrap_samples <- bootstraps(data_train, times = 100)
 ```
 
+2.Write a loop to fit the model to each of the bootstrap samples and make predictions from this model for the original training data.
+Save all predictions in a list.
 
-2.Write a loop to fit the model to each of the bootstrap samples and make predictions 
-from this model for the original training data. Save all predictions in a list.
 ```{r}
 #create an emplty list 
 boot_list <- list()
@@ -628,9 +629,8 @@ for(i in 1:100) {
 }
 ```
 
+3.Compute the mean and confidence intervals of predicted values, and create a dataframe for plotting.
 
-3.Compute the mean and confidence intervals of predicted values, and create a dataframe
-for plotting.
 ```{r}
 #convert list into matrix
 pred_matrix <- matrix(unlist(boot_list), nrow = length(boot_list), byrow = TRUE)
@@ -647,7 +647,8 @@ graph_df2$U97.5<-preds[,3]
 graph_df2$Predicted<-mod2$Predicted
 ```
 
-4. Plot observed values on the x-axis, and original predictions on the training data, as well as median and the 95% confidence intervals on the y-axis.
+4.  Plot observed values on the x-axis, and original predictions on the training data, as well as median and the 95% confidence intervals on the y-axis.
+
 ```{r}
 ggplot(graph_df2, aes(x = Y)) +
   geom_point(aes(y = Predicted), color = "black") +  # Plot Predicted values
@@ -663,16 +664,71 @@ ggplot(graph_df2, aes(x = Y)) +
   geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "grey")
   
 ```
-The data points are generally scattered around the diagonal line, indicating the model 
-make relatively accurate predictions. The median values and the predicted values are very close. 
-The 95% confidence intervals for the predictions are relatively narrow, indicating the uncertainty in the predictions are low. However, for high values of Y, the predictions get less accurate and the uncertainty also increases. This suggests there might be some pattern in the data not captured by the model. 
 
+The data points are generally scattered around the diagonal line, indicating the model make relatively accurate predictions.
+The median values and the predicted values are very close.
+The 95% confidence intervals for the predictions are relatively narrow, indicating the uncertainty in the predictions are low.
+However, for high values of Y, the predictions get less accurate and the uncertainty also increases.
+This suggests there might be some pattern in the data not captured by the model.
 
+## Part 3 
 
+Final Evaluation Using Test Data Using the fit of the model 2 on the training data, I will use this fitted model to make predictions for the test data.
 
+```{r}
+# predicting using model 2 on the testing data
+pred_rmodtest <- predict(rmod2, new_data = data_test)$.pred
 
+#Creating data for the graph
+mod4 <- data.frame(
+  Observed_Values  = data_train$Y,
+  Predicted  = pred_rmodtest,
+  label="Predictions using test data")
+#binding the dataframes
+graph_df2<-rbind(mod2,mod4)
 
+```
 
+3.Create a scatterplot with predicted values on Y-axis and observed values on X-axis, stratified by models.
 
+```{r}
+ggplot(graph_df2, aes(x = Observed_Values, y = Predicted, color = label)) +
+  geom_point() +  
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "grey") +  
+  labs(x = "Observed Values", y = "Predicted Values", title = "Observed vs. Predicted Values by Models", color = "Model") +
+  theme_minimal() + # Use a minimal theme for aesthetics
+  scale_shape_manual(values = c(16, 17, 18)) + # Set different shapes for each level of the label variable
+  scale_color_manual(values = c("blue", "green", "red"))
 
+```
 
+```         
+                Overall Model Assessment
+```
+
+1.  **Performance Relative to the Null Model:**
+
+The null model typically predicts the mean response for all observations and serves as a baseline for comparison.
+It has an RMSE of 948.3526 and an R-squared value of NA, indicating that it doesn't provide any predictive power and doesn't explain any variance in the data.
+Model 1: With only the DOSE predictor, Model 1 achieves an RMSE of 706.0131078 and an R-squared value of 0.4507963.
+Comparing to the null model, Model 1 has a lower RMSE and a non-zero R-squared, indicating that it performs better than the null model.
+However, it's essential to note that the improvement is modest.
+Model 2: Including all predictors, Model 2 typically achieves even lower RMSE and higher R-squared values compared to both the null model and Model 1.
+This suggests that Model 2 provides better predictive performance and explains more variance in the data compared to simpler models.
+
+2.  **Usability of Model 1:**
+
+Model 1, with only the DOSE predictor, shows some improvement over the null model, indicating that DOSE has some predictive power regarding the response variable.
+However, with an R-squared of 0.4507963, it means that only 45.08% of the variance in the response variable is explained by the DOSE predictor.
+This might not be sufficient for many real-world applications where higher predictive accuracy is desired.
+Therefore, while Model 1 might have some utility, it may not be considered highly usable for many real purposes, especially those requiring high predictive accuracy.
+
+3.  **Usability of Model 2:**
+
+Model 2, which includes all predictors, generally improves results further compared to both the null model and Model 1.
+With higher R-squared values and lower RMSE, Model 2 indicates better predictive performance and a better fit to the data.
+However, it's essential to consider the complexity of the model and potential overfitting when including many predictors.
+If Model 2's complexity is justified by the nature of the problem and the available data, it could be considered usable for real purposes, especially if higher predictive accuracy is required.
+
+In summary, both Model 1 and Model 2 perform better than the null model, with Model 2 generally providing the best predictive performance.
+However, the usability of each model depends on the specific requirements of the problem at hand, considering factors such as predictive accuracy, model complexity, and interpretability.
