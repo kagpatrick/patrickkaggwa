@@ -671,7 +671,7 @@ The 95% confidence intervals for the predictions are relatively narrow, indicati
 However, for high values of Y, the predictions get less accurate and the uncertainty also increases.
 This suggests there might be some pattern in the data not captured by the model.
 
-## Part 3 
+## Part 3
 
 Final Evaluation Using Test Data Using the fit of the model 2 on the training data, I will use this fitted model to make predictions for the test data.
 
