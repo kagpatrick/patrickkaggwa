@@ -26,6 +26,8 @@ website:
             file: fitting-exercise/fitting-exercise.qmd 
           - text: "Machine Learning Exercise"
             file: ml-models-exercise/ml-models-exercise.qmd 
+          - text: "Tidytuesday Exercise"
+            file: ml-models-exercise/tidytuesday-exercise.qmd
     right:
       - icon: github 
         href: https://github.com/kagpatrick/patrickkaggwa-MADA-portfolio        
