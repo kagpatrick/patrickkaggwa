@@ -26,19 +26,13 @@ library(tidymodels) # for building models
 library(patchwork) # for creating final figure 
 
 ```
-# Data Exploration and I will use eclipse total in 2024 and eclipse_annular_2023
+# Data Exploration and I will use eclipse total in 2024 
 ```{r message=FALSE, warning=FALSE}
 eclipse_total_2024 <- read_csv("data/eclipse_total_2024.csv")
-eclipse_annular_2023 <- read_csv("data/eclipse_annular_2023.csv")
-eclipse_partial_2023 <- read_csv("data/eclipse_partial_2023.csv")
-eclipse_partial_2024 <- read_csv("data/eclipse_partial_2024.csv")
+
 ```
 ```{r message=FALSE, warning=FALSE}
 #looking at the summary of the datasets 
-
-summary(eclipse_annular_2023)
-colnames(eclipse_annular_2023)
-dim(eclipse_annular_2023)
 
 summary(eclipse_total_2024)
 colnames(eclipse_total_2024)
